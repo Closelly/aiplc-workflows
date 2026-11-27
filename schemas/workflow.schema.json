@@ -1,0 +1,227 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "workflow",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "role",
+    "phases"
+  ],
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "role": {
+      "enum": [
+        "po",
+        "dev"
+      ]
+    },
+    "phases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "title",
+          "folder",
+          "lead",
+          "contributors",
+          "skills",
+          "focus",
+          "artifacts"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "pattern": "^[a-zA-Z0-9]+(?:[-_][a-zA-Z0-9]+)*$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 160
+          },
+          "folder": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240,
+            "pattern": "^[A-Za-z0-9_./@ +()-]+$"
+          },
+          "lead": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "pattern": "^[a-zA-Z0-9]+(?:[-_][a-zA-Z0-9]+)*$"
+          },
+          "contributors": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80,
+              "pattern": "^[a-zA-Z0-9]+(?:[-_][a-zA-Z0-9]+)*$"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+          },
+          "skills": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80,
+              "pattern": "^[a-zA-Z0-9]+(?:[-_][a-zA-Z0-9]+)*$"
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "focus": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          },
+          "gate": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "pattern": "^[a-zA-Z0-9]+(?:[-_][a-zA-Z0-9]+)*$"
+          },
+          "check": {
+            "enum": [
+              "creative",
+              "ux",
+              "specifications",
+              "validation",
+              "gtm",
+              "handoff",
+              "onboarding"
+            ]
+          },
+          "final": {
+            "enum": [
+              "seal",
+              "ready"
+            ]
+          },
+          "video": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "renderer",
+              "required",
+              "categories",
+              "maxDuration"
+            ],
+            "properties": {
+              "renderer": {
+                "const": "hyperframes"
+              },
+              "required": {
+                "const": true
+              },
+              "categories": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "product",
+                    "prototype",
+                    "business",
+                    "marketing",
+                    "other"
+                  ]
+                },
+                "minItems": 4,
+                "uniqueItems": true
+              },
+              "maxDuration": {
+                "type": "null"
+              }
+            }
+          },
+          "artifacts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "path",
+                "type"
+              ],
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240,
+                  "pattern": "^[A-Za-z0-9_./@ +()-]+$"
+                },
+                "type": {
+                  "enum": [
+                    "md",
+                    "json",
+                    "html",
+                    "dir",
+                    "pptx",
+                    "mp4",
+                    "srt"
+                  ]
+                },
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80,
+                  "pattern": "^[a-zA-Z0-9]+(?:[-_][a-zA-Z0-9]+)*$"
+                },
+                "generated": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "minItems": 1
+          },
+          "checklist": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "title",
+                "resources"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80,
+                  "pattern": "^[a-zA-Z0-9]+(?:[-_][a-zA-Z0-9]+)*$"
+                },
+                "title": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 160
+                },
+                "resources": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240,
+                    "pattern": "^[A-Za-z0-9_./@ +()-]+$"
+                  },
+                  "minItems": 1,
+                  "uniqueItems": true
+                }
+              }
+            },
+            "minItems": 1
+          }
+        }
+      },
+      "minItems": 1
+    }
+  }
+}

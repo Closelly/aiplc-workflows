@@ -1,0 +1,120 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "visual-research",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "references",
+    "directions"
+  ],
+  "properties": {
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "title",
+          "url",
+          "accessedOn",
+          "observation",
+          "asset",
+          "usage"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "pattern": "^[a-zA-Z0-9]+(?:[-_][a-zA-Z0-9]+)*$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 160
+          },
+          "url": {
+            "type": "string",
+            "minLength": 12,
+            "maxLength": 1500,
+            "pattern": "^https?://[^\\s]+$"
+          },
+          "accessedOn": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 10,
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "observation": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          },
+          "asset": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240,
+            "pattern": "^[A-Za-z0-9_./@ +()-]+$"
+          },
+          "usage": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 160
+          }
+        }
+      },
+      "minItems": 3
+    },
+    "directions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "title",
+          "referenceIds",
+          "moodboard",
+          "tradeoff"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "pattern": "^[a-zA-Z0-9]+(?:[-_][a-zA-Z0-9]+)*$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 160
+          },
+          "referenceIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80,
+              "pattern": "^[a-zA-Z0-9]+(?:[-_][a-zA-Z0-9]+)*$"
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "moodboard": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240,
+            "pattern": "^[A-Za-z0-9_./@ +()-]+$"
+          },
+          "tradeoff": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          }
+        }
+      },
+      "minItems": 3
+    }
+  }
+}

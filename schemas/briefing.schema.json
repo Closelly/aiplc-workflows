@@ -1,0 +1,230 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "briefing",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "summaries",
+    "decks"
+  ],
+  "properties": {
+    "summaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "executive",
+        "business",
+        "product",
+        "critical"
+      ],
+      "properties": {
+        "executive": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          },
+          "minItems": 1
+        },
+        "business": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          },
+          "minItems": 1
+        },
+        "product": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          },
+          "minItems": 1
+        },
+        "critical": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "decks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pitch",
+        "product",
+        "marketing"
+      ],
+      "properties": {
+        "pitch": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "title",
+              "keyMessage",
+              "points",
+              "notes",
+              "sources"
+            ],
+            "properties": {
+              "title": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 72
+              },
+              "keyMessage": {
+                "type": "string",
+                "minLength": 8,
+                "maxLength": 155
+              },
+              "points": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 4,
+                  "maxLength": 100
+                },
+                "minItems": 2,
+                "maxItems": 4
+              },
+              "notes": {
+                "type": "string",
+                "minLength": 8,
+                "maxLength": 4000
+              },
+              "sources": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240,
+                  "pattern": "^[A-Za-z0-9_./@ +()-]+$"
+                },
+                "minItems": 1,
+                "uniqueItems": true
+              }
+            }
+          },
+          "minItems": 3
+        },
+        "product": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "title",
+              "keyMessage",
+              "points",
+              "notes",
+              "sources"
+            ],
+            "properties": {
+              "title": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 72
+              },
+              "keyMessage": {
+                "type": "string",
+                "minLength": 8,
+                "maxLength": 155
+              },
+              "points": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 4,
+                  "maxLength": 100
+                },
+                "minItems": 2,
+                "maxItems": 4
+              },
+              "notes": {
+                "type": "string",
+                "minLength": 8,
+                "maxLength": 4000
+              },
+              "sources": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240,
+                  "pattern": "^[A-Za-z0-9_./@ +()-]+$"
+                },
+                "minItems": 1,
+                "uniqueItems": true
+              }
+            }
+          },
+          "minItems": 3
+        },
+        "marketing": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "title",
+              "keyMessage",
+              "points",
+              "notes",
+              "sources"
+            ],
+            "properties": {
+              "title": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 72
+              },
+              "keyMessage": {
+                "type": "string",
+                "minLength": 8,
+                "maxLength": 155
+              },
+              "points": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 4,
+                  "maxLength": 100
+                },
+                "minItems": 2,
+                "maxItems": 4
+              },
+              "notes": {
+                "type": "string",
+                "minLength": 8,
+                "maxLength": 4000
+              },
+              "sources": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240,
+                  "pattern": "^[A-Za-z0-9_./@ +()-]+$"
+                },
+                "minItems": 1,
+                "uniqueItems": true
+              }
+            }
+          },
+          "minItems": 3
+        }
+      }
+    }
+  }
+}

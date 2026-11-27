@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ai-opportunities",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "opportunities",
+    "decisionBasis"
+  ],
+  "properties": {
+    "opportunities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "workflow",
+          "value",
+          "decision",
+          "inputs",
+          "humanControl",
+          "privacy",
+          "evaluation",
+          "cost",
+          "fallback"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "pattern": "^[a-zA-Z0-9]+(?:[-_][a-zA-Z0-9]+)*$"
+          },
+          "workflow": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 160
+          },
+          "value": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          },
+          "decision": {
+            "enum": [
+              "adopt",
+              "defer",
+              "reject"
+            ]
+          },
+          "inputs": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          },
+          "humanControl": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          },
+          "privacy": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          },
+          "evaluation": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          },
+          "cost": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          },
+          "fallback": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          }
+        }
+      },
+      "minItems": 0
+    },
+    "decisionBasis": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 4000
+    }
+  }
+}

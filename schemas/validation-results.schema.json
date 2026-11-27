@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "validation-results",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "results",
+    "openIssues"
+  ],
+  "properties": {
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "test",
+          "outcome",
+          "evidence"
+        ],
+        "properties": {
+          "test": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "pattern": "^[a-zA-Z0-9]+(?:[-_][a-zA-Z0-9]+)*$"
+          },
+          "outcome": {
+            "enum": [
+              "pass",
+              "fail",
+              "planned"
+            ]
+          },
+          "evidence": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          }
+        }
+      },
+      "minItems": 1
+    },
+    "openIssues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "description",
+          "blocking",
+          "owner"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "pattern": "^[a-zA-Z0-9]+(?:[-_][a-zA-Z0-9]+)*$"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          },
+          "blocking": {
+            "type": "boolean"
+          },
+          "owner": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 160
+          }
+        }
+      },
+      "minItems": 0
+    }
+  }
+}

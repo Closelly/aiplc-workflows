@@ -1,0 +1,95 @@
+version: 1
+role: dev
+phases:
+  - id: developer-onboarding
+    title: "Onboarding obligatorio"
+    folder: docs/technical/aiplc/01-onboarding
+    lead: developer-onboarding
+    contributors: [knowledge-curator]
+    skills: [closelly-aiplc-dev, prototype-walkthrough]
+    focus: Facilitar el recorrido guiado. Resolver dudas con los artefactos y elevar las decisiones de alcance al PO.
+    gate: onboarding
+    check: onboarding
+    artifacts:
+      - { path: understanding.md, type: md }
+    checklist:
+      - id: welcome
+        title: "Bienvenida y objetivos"
+        resources: [docs/aiplc/09-handoff/onboarding/START-HERE.md]
+      - id: executive-briefing
+        title: "Negocio y propuesta de valor"
+        resources: [docs/aiplc/09-handoff/onboarding/executive-summary.md, docs/aiplc/09-handoff/onboarding/business-summary.md]
+      - id: pitch-deck
+        title: "Oportunidad comercial"
+        resources: [docs/aiplc/09-handoff/onboarding/product-pitch-deck.pptx, docs/aiplc/09-handoff/onboarding/marketing-presentation.pptx]
+      - id: product-presentation
+        title: "Capacidades y límites del producto"
+        resources: [docs/aiplc/09-handoff/onboarding/product-presentation.pptx, docs/aiplc/09-handoff/onboarding/product-summary.md]
+      - id: video-briefing
+        title: "Ver la película y revisar sus capítulos"
+        resources: [docs/aiplc/09-handoff/onboarding/product-walkthrough.mp4, docs/aiplc/09-handoff/onboarding/video-chapters.json, docs/aiplc/09-handoff/onboarding/video-subtitles.srt]
+      - id: product-walkthrough
+        title: "Recorrer el prototipo interactivo"
+        resources: [docs/aiplc/09-handoff/prototype/index.html, docs/aiplc/05-ux-ui/flows.json]
+      - id: knowledge-exploration
+        title: "Ubicar decisiones y conocimiento vigente"
+        resources: [AGENTS.md, docs/aiplc/09-handoff/handoff-manifest.json, docs/business/README.md, docs/technical/README.md, docs/operations/README.md]
+      - id: critical-requirements
+        title: "Revisar requisitos críticos y pruebas"
+        resources: [docs/aiplc/09-handoff/onboarding/critical-requirements.md, docs/aiplc/06-specifications/requirements.json, docs/aiplc/07-validation/test-cases.json]
+      - id: questions
+        title: "Registrar preguntas y dependencias"
+        resources: [docs/aiplc/06-specifications/functional-spec.md]
+  - id: technical-discovery
+    title: "Discovery técnico"
+    folder: docs/technical/aiplc/02-discovery
+    lead: technical-architect
+    contributors: [security-infrastructure-architect, engineering-planner]
+    skills: [engineering-readiness]
+    focus: Probar viabilidad y restricciones, comparar alternativas, declarar desconocidos y aclarar riesgos con el PO.
+    artifacts:
+      - { path: feasibility.md, type: md }
+      - { path: risks-and-spikes.md, type: md }
+  - id: architecture
+    title: "Arquitectura"
+    folder: docs/technical
+    lead: technical-architect
+    contributors: [security-infrastructure-architect, knowledge-curator]
+    skills: [engineering-readiness]
+    focus: Documentar arquitectura propuesta, datos, servicios, código, seguridad, decisiones, entornos y configuración sin secretos.
+    artifacts:
+      - { path: architecture.md, type: md }
+      - { path: data-and-services.md, type: md }
+      - { path: environments.md, type: md }
+      - { path: coding-and-testing.md, type: md }
+  - id: ai-engineering
+    title: "Diseño técnico de IA"
+    folder: docs/technical/aiplc/04-ai-engineering
+    lead: ai-solutions-architect
+    contributors: [security-infrastructure-architect, quality-analyst]
+    skills: [ai-native-design, engineering-readiness]
+    focus: Especificar evaluación y operación técnica de IA, latencia, costos, datos, observabilidad, escalamiento humano y fallback.
+    artifacts:
+      - { path: ai-architecture.md, type: md }
+      - { path: evaluation-and-safety.md, type: md }
+  - id: engineering-planning
+    title: "Planificación técnica"
+    folder: docs/technical/aiplc/05-planning
+    lead: engineering-planner
+    contributors: [technical-architect, quality-analyst]
+    skills: [engineering-readiness]
+    focus: Planificar cortes, dependencias, responsables y estrategia de pruebas. Definir criterios de verificación para el flujo habitual.
+    artifacts:
+      - { path: implementation-plan.md, type: md }
+      - { path: verification-plan.md, type: md }
+  - id: technical-readiness
+    title: "Readiness técnico"
+    folder: docs/technical/aiplc/06-readiness
+    lead: engineering-planner
+    contributors: [technical-architect, knowledge-curator, security-infrastructure-architect]
+    skills: [engineering-readiness, knowledge-curation]
+    focus: Validar requisitos, dependencias, riesgos y operación. Cerrar la preparación y entregar al flujo habitual del DEV/Ops.
+    gate: readiness
+    final: ready
+    artifacts:
+      - { path: readiness-report.md, type: md }

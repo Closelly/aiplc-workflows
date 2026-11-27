@@ -1,0 +1,143 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "media-receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "renderer",
+    "rendererVersion",
+    "nodeVersion",
+    "ffmpegVersion",
+    "language",
+    "tts",
+    "inputs",
+    "video",
+    "source",
+    "transcript",
+    "subtitles",
+    "chapters",
+    "checks"
+  ],
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "renderer": {
+      "const": "hyperframes"
+    },
+    "rendererVersion": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40
+    },
+    "nodeVersion": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40
+    },
+    "ffmpegVersion": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "language": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 24
+    },
+    "tts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provider",
+        "voice"
+      ],
+      "properties": {
+        "provider": {
+          "enum": [
+            "say",
+            "command"
+          ]
+        },
+        "voice": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "credentialEnv": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "pattern": "^[A-Z][A-Z0-9_]+$"
+        }
+      }
+    },
+    "inputs": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "video": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "source": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "transcript": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "subtitles": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "chapters": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "chapter",
+          "runtime",
+          "sha256"
+        ],
+        "properties": {
+          "chapter": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "pattern": "^[a-zA-Z0-9]+(?:[-_][a-zA-Z0-9]+)*$"
+          },
+          "runtime": {
+            "const": "passed"
+          },
+          "sha256": {
+            "type": "string",
+            "minLength": 64,
+            "maxLength": 64,
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        }
+      },
+      "minItems": 4
+    }
+  }
+}

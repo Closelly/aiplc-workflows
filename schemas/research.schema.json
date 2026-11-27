@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "research",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "sources",
+    "hypotheses",
+    "limitations"
+  ],
+  "properties": {
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "title",
+          "url",
+          "accessedOn",
+          "observation"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "pattern": "^[a-zA-Z0-9]+(?:[-_][a-zA-Z0-9]+)*$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 160
+          },
+          "url": {
+            "type": "string",
+            "minLength": 12,
+            "maxLength": 1500,
+            "pattern": "^https?://[^\\s]+$"
+          },
+          "accessedOn": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 10,
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "observation": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          }
+        }
+      },
+      "minItems": 2
+    },
+    "hypotheses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "claim",
+          "test"
+        ],
+        "properties": {
+          "claim": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          },
+          "test": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          }
+        }
+      },
+      "minItems": 0
+    },
+    "limitations": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 4000
+    }
+  }
+}

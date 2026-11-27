@@ -1,0 +1,367 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "commercial-plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "alternatives",
+    "recommendation",
+    "rationale",
+    "budget",
+    "phases",
+    "humanTasks",
+    "experiments",
+    "growthRequirements"
+  ],
+  "properties": {
+    "alternatives": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "upside",
+          "tradeoff"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "pattern": "^[a-zA-Z0-9]+(?:[-_][a-zA-Z0-9]+)*$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 160
+          },
+          "upside": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          },
+          "tradeoff": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          }
+        }
+      },
+      "minItems": 2,
+      "maxItems": 3
+    },
+    "recommendation": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "pattern": "^[a-zA-Z0-9]+(?:[-_][a-zA-Z0-9]+)*$"
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 4000
+    },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "currency",
+        "monthly",
+        "allocation",
+        "poWeeklyHours"
+      ],
+      "properties": {
+        "currency": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 3,
+          "pattern": "^[A-Z]{3}$"
+        },
+        "monthly": {
+          "type": "number",
+          "minimum": 0
+        },
+        "allocation": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 4000
+        },
+        "poWeeklyHours": {
+          "type": "number",
+          "minimum": 0.1
+        }
+      }
+    },
+    "phases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "objective",
+          "activities",
+          "metrics",
+          "exitCriteria"
+        ],
+        "properties": {
+          "id": {
+            "enum": [
+              "prelaunch",
+              "launch",
+              "growth"
+            ]
+          },
+          "objective": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          },
+          "activities": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 4000
+            },
+            "minItems": 1
+          },
+          "metrics": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "name",
+                "target",
+                "measurement",
+                "owner"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 160
+                },
+                "target": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 160
+                },
+                "measurement": {
+                  "type": "string",
+                  "minLength": 8,
+                  "maxLength": 4000
+                },
+                "owner": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 160
+                }
+              }
+            },
+            "minItems": 1
+          },
+          "exitCriteria": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          }
+        }
+      },
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "humanTasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "phase",
+          "owner",
+          "objective",
+          "instructions",
+          "due",
+          "effortHours",
+          "materials",
+          "dependencies",
+          "expected",
+          "evidence"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "pattern": "^[a-zA-Z0-9]+(?:[-_][a-zA-Z0-9]+)*$"
+          },
+          "phase": {
+            "enum": [
+              "prelaunch",
+              "launch",
+              "growth"
+            ]
+          },
+          "owner": {
+            "const": "po"
+          },
+          "objective": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          },
+          "instructions": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          },
+          "due": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 160
+          },
+          "effortHours": {
+            "type": "number",
+            "minimum": 0.1
+          },
+          "materials": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 240,
+              "pattern": "^[A-Za-z0-9_./@ +()-]+$"
+            },
+            "minItems": 0
+          },
+          "dependencies": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80,
+              "pattern": "^[a-zA-Z0-9]+(?:[-_][a-zA-Z0-9]+)*$"
+            },
+            "minItems": 0
+          },
+          "expected": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          },
+          "evidence": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          }
+        }
+      },
+      "minItems": 3
+    },
+    "experiments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "hypothesis",
+          "channel",
+          "cost",
+          "duration",
+          "metric",
+          "target",
+          "continueIf",
+          "stopIf",
+          "impact",
+          "confidence",
+          "effort"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "pattern": "^[a-zA-Z0-9]+(?:[-_][a-zA-Z0-9]+)*$"
+          },
+          "hypothesis": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          },
+          "channel": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 160
+          },
+          "cost": {
+            "type": "number",
+            "minimum": 0
+          },
+          "duration": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 160
+          },
+          "metric": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 160
+          },
+          "target": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 160
+          },
+          "continueIf": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          },
+          "stopIf": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          },
+          "impact": {
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "confidence": {
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "effort": {
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          }
+        }
+      },
+      "minItems": 1
+    },
+    "growthRequirements": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 80,
+        "pattern": "^[a-zA-Z0-9]+(?:[-_][a-zA-Z0-9]+)*$"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    }
+  }
+}

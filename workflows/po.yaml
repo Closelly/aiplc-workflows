@@ -1,0 +1,150 @@
+version: 1
+role: po
+phases:
+  - id: discovery
+    title: "Discovery de negocio"
+    folder: docs/aiplc/01-discovery
+    lead: business-strategist
+    contributors: [market-researcher, product-critic]
+    skills: [market-research]
+    focus: Investigar segmento, problema, alternativas y señales de demanda antes del taller. Separar evidencia, hipótesis e incógnitas.
+    artifacts:
+      - { path: brief.md, type: md }
+      - { path: research.json, type: json, schema: research }
+      - { path: decisions.md, type: md }
+  - id: product-definition
+    title: "Definición del producto"
+    folder: docs/aiplc/02-product-definition
+    lead: product-manager
+    contributors: [business-strategist, product-critic]
+    skills: [product-specification]
+    focus: Definir propuesta, perfiles, casos de uso, alcance y exclusiones, valor, éxito, riesgos, reglas y decisiones con el PO.
+    gate: business
+    artifacts:
+      - { path: product-definition.md, type: md }
+      - { path: business-rules.md, type: md }
+      - { path: outcomes.md, type: md }
+  - id: ai-native
+    title: "Diseño AI-native"
+    folder: docs/aiplc/03-ai-native
+    lead: ai-experience-designer
+    contributors: [product-critic]
+    skills: [ai-native-design]
+    focus: Evaluar oportunidades, datos, costos, fallos y evaluación. Delimitar decisiones humanas y diseñar modos degradados.
+    artifacts:
+      - { path: ai-native-design.md, type: md }
+      - { path: opportunities.json, type: json, schema: ai-opportunities }
+  - id: brand-creative
+    title: "Marca y dirección creativa"
+    folder: docs/aiplc/04-brand-creative
+    lead: art-director
+    contributors: [visual-researcher, ux-designer, visual-design-critic]
+    skills: [visual-research]
+    focus: Investigar referencias en navegador, preparar al menos tres rutas visuales y realizar un taller con el PO antes de validar los tokens y la dirección.
+    gate: creative
+    check: creative
+    artifacts:
+      - { path: visual-research.json, type: json, schema: visual-research }
+      - { path: creative-brief.md, type: md }
+      - { path: direction.json, type: json, schema: creative-direction }
+      - { path: workshop.md, type: md }
+      - { path: DESIGN.md, type: md }
+      - { path: design-tokens.json, type: json, schema: design-tokens }
+      - { path: ui-patterns.md, type: md }
+      - { path: visual-validation.md, type: md }
+      - { path: references, type: dir }
+      - { path: moodboards, type: dir }
+  - id: ux-ui
+    title: "Experiencia, UI y prototipo"
+    folder: docs/aiplc/05-ux-ui
+    lead: ux-designer
+    contributors: [art-director, visual-design-critic, product-critic]
+    skills: [ux-evaluation, prototype-walkthrough]
+    focus: Diseñar flujos, estados y accesibilidad. Probar un prototipo navegable y capturar recorridos reales. Registrar la revisión humana de la experiencia.
+    gate: experience
+    check: ux
+    artifacts:
+      - { path: journeys.md, type: md }
+      - { path: flows.json, type: json, schema: flows }
+      - { path: evaluation.md, type: md }
+      - { path: prototype/index.html, type: html }
+      - { path: prototype, type: dir }
+      - { path: walkthrough, type: dir }
+  - id: specifications
+    title: "Especificaciones"
+    folder: docs/aiplc/06-specifications
+    lead: product-manager
+    contributors: [ux-designer, ai-experience-designer, quality-analyst]
+    skills: [product-specification]
+    focus: Traducir decisiones, reglas, datos conceptuales, integraciones y flujos en requisitos identificados y criterios verificables.
+    check: specifications
+    artifacts:
+      - { path: functional-spec.md, type: md }
+      - { path: data-and-integrations.md, type: md }
+      - { path: requirements.json, type: json, schema: requirements }
+  - id: validation
+    title: "Validación y pruebas"
+    folder: docs/aiplc/07-validation
+    lead: quality-analyst
+    contributors: [product-critic, visual-design-critic]
+    skills: [ux-evaluation, product-specification]
+    focus: Cruzar requisitos, criterios y casos. Ejecutar las pruebas posibles del prototipo y separar las que corresponden a implementación.
+    check: validation
+    artifacts:
+      - { path: test-plan.md, type: md }
+      - { path: test-cases.json, type: json, schema: test-cases }
+      - { path: validation-results.json, type: json, schema: validation-results }
+  - id: go-to-market
+    title: "Marketing, ventas y growth"
+    folder: docs/aiplc/08-go-to-market
+    lead: marketing-strategist
+    contributors: [market-researcher, sales-strategist, growth-strategist, growth-hacker, content-seo-strategist, marketing-operations, growth-critic]
+    skills: [market-research, growth-experiments, marketing-storytelling]
+    focus: Investigar primero, recomendar una de dos o tres estrategias y discutir dinero, tiempo y tareas humanas. Definir prelaunch, launch y growth con métricas y criterios de avance.
+    check: gtm
+    gate: commercial
+    artifacts:
+      - { path: research.json, type: json, schema: research }
+      - { path: strategy.md, type: md }
+      - { path: workshop.md, type: md }
+      - { path: commercial-plan.json, type: json, schema: commercial-plan }
+      - { path: commercial-playbook.md, type: md }
+      - { path: sales-assets.md, type: md }
+      - { path: content-calendar.md, type: md }
+      - { path: ai-automation.md, type: md }
+  - id: handoff
+    title: "Entrega comercial y al DEV"
+    folder: docs/aiplc/09-handoff
+    lead: onboarding-director
+    contributors: [presentation-producer, video-producer, multimedia-quality-critic, knowledge-curator]
+    skills: [product-storytelling, presentation-generation, product-onboarding-video, business-visualization, marketing-storytelling, video-quality-review]
+    focus: Preparar y revisar resúmenes, tres presentaciones, prototipo y película. Entregar los insumos comerciales al PO y sellar la definición para el DEV.
+    check: handoff
+    gate: handoff
+    final: seal
+    video:
+      renderer: hyperframes
+      required: true
+      categories: [product, prototype, business, marketing]
+      maxDuration: null
+    artifacts:
+      - { path: briefing.json, type: json, schema: briefing }
+      - { path: video-plan.json, type: json, schema: video-plan }
+      - { path: validation-report.md, type: md }
+      - { path: commercial-handoff.md, type: md }
+      - { path: onboarding/START-HERE.md, type: md, generated: true }
+      - { path: onboarding/executive-summary.md, type: md, generated: true }
+      - { path: onboarding/business-summary.md, type: md, generated: true }
+      - { path: onboarding/product-summary.md, type: md, generated: true }
+      - { path: onboarding/critical-requirements.md, type: md, generated: true }
+      - { path: onboarding/product-pitch-deck.pptx, type: pptx, generated: true }
+      - { path: onboarding/product-presentation.pptx, type: pptx, generated: true }
+      - { path: onboarding/marketing-presentation.pptx, type: pptx, generated: true }
+      - { path: onboarding/product-walkthrough.mp4, type: mp4, generated: true }
+      - { path: onboarding/video-chapters.json, type: json, schema: chapters, generated: true }
+      - { path: onboarding/video-transcript.md, type: md, generated: true }
+      - { path: onboarding/video-subtitles.srt, type: srt, generated: true }
+      - { path: onboarding/video-receipt.json, type: json, schema: media-receipt, generated: true }
+      - { path: onboarding/video-source, type: dir, generated: true }
+      - { path: prototype/index.html, type: html, generated: true }
+      - { path: prototype, type: dir, generated: true }

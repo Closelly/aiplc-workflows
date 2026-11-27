@@ -1,0 +1,147 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "project",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "methodologyVersion",
+    "projectId",
+    "name",
+    "idea",
+    "createdAt",
+    "methodologyDigest",
+    "roles",
+    "harness",
+    "language"
+  ],
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "methodologyVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "projectId": {
+      "type": "string",
+      "minLength": 36,
+      "maxLength": 36
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "idea": {
+      "type": "string",
+      "minLength": 0,
+      "maxLength": 4000
+    },
+    "createdAt": {
+      "type": "string",
+      "minLength": 24,
+      "maxLength": 24,
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+    },
+    "methodologyDigest": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "roles": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "po",
+        "dev"
+      ],
+      "properties": {
+        "po": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "publicKey"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80,
+              "pattern": "^[a-zA-Z0-9_.@-]+$"
+            },
+            "publicKey": {
+              "type": "string",
+              "minLength": 30,
+              "maxLength": 140,
+              "pattern": "^ssh-ed25519 [A-Za-z0-9+/=]+$"
+            }
+          }
+        },
+        "dev": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "publicKey"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80,
+              "pattern": "^[a-zA-Z0-9_.@-]+$"
+            },
+            "publicKey": {
+              "type": "string",
+              "minLength": 30,
+              "maxLength": 140,
+              "pattern": "^ssh-ed25519 [A-Za-z0-9+/=]+$"
+            }
+          }
+        }
+      }
+    },
+    "harness": {
+      "enum": [
+        "codex",
+        "portable"
+      ]
+    },
+    "tts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provider",
+        "voice"
+      ],
+      "properties": {
+        "provider": {
+          "enum": [
+            "say",
+            "command"
+          ]
+        },
+        "voice": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "credentialEnv": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "pattern": "^[A-Z][A-Z0-9_]+$"
+        }
+      }
+    },
+    "language": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 24,
+      "pattern": "^[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*$"
+    }
+  }
+}
