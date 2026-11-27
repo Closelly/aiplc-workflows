@@ -30,3 +30,21 @@ Se verificaron el encargo para Codex y el formato e instalación de las skills.
 No se ejecutó un proyecto real de punta a punta en una sesión de inferencia.
 Linux, Windows, proveedores TTS externos, publicación remota e identidad de
 organización quedan fuera de las verificaciones de este lanzamiento.
+
+## Instalador público y empaquetado
+
+La ampliación del instalador se verificó en macOS ARM64 con Bun 1.4.5:
+
+- `bun run check`: tipos y los 75 archivos de la metodología.
+- `bun run check:public`: documentación base, patrones de secretos y rutas personales.
+- `bun run build`: ejecutable, metodología, documentación y licencias de ejecución.
+- `bun test`: 13 pruebas pasaron y 1 prueba de render multimedia quedó omitida.
+- Instalación desde un paquete local sin Bun ni Node en el PATH; creación real de
+  un producto aislado y reanudación en Discovery, con cero aprobaciones y sin DEV.
+- Reinstalación, rutas con espacios y comillas, preservación de la configuración,
+  rechazo de SHA-256 incorrecto, miembros de tar con rutas peligrosas o enlaces,
+  colisiones de skills, distribución local y desinstalación conservando datos ajenos.
+
+El ensayo local no acredita descarga pública ni ejecución en otros sistemas. Los
+workflows de GitHub comprobarán macOS ARM64/x64 y Linux ARM64/x64 al subir el código
+y antes de preparar cada release. Los resultados observados quedan en Actions.

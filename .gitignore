@@ -3,3 +3,16 @@ dist/
 .DS_Store
 .env
 .env.*
+!.env.example
+release/
+coverage/
+*.log
+*.tmp
+*.pem
+*.key
+*.p12
+*.pfx
+id_ed25519
+id_rsa
+*_ed25519
+.install-lock/

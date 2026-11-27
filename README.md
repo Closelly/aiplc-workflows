@@ -5,27 +5,55 @@ preparación técnica. La CLI `closelly-aiplc` controla el orden, la trazabilida
 aprobaciones y el sello Git. ChatGPT/Codex investiga, redacta y guía a cada responsable
 usando los encargos del motor y las Agent Skills.
 
-## Ejecutar o instalar
+## Empieza aquí
 
-Requiere Git y OpenSSH con firmas Ed25519. Para compilar desde el código, usa [Bun 1.3+](https://bun.sh/docs/installation).
-El binario compilado incluye Bun y se distribuye junto a `dist/assets` y `dist/vendor`.
+**Estado: versión inicial 0.1.0.** El código está preparado para publicación pública;
+la descarga con un solo comando estará disponible al publicar la primera release
+en [GitHub](https://github.com/Closelly/aiplc-workflows/releases).
 
-```sh
-bun install --frozen-lockfile
-bun run check
-bun test
-bun run build
-./dist/closelly-aiplc version
-./dist/closelly-aiplc doctor --core
-```
-
-Instala en un directorio explícito si quieres que el comando esté en PATH. La instalación
-de las skills en Codex también es explícita y el instalador rechaza destinos ocupados.
+En macOS, Linux o WSL, ejecuta en una terminal:
 
 ```sh
-./install.sh --prefix "$HOME/.local/closelly-aiplc" --skills-dir "$HOME/.agents/skills"
-export PATH="$HOME/.local/closelly-aiplc/bin:$PATH"
+curl -fsSL https://github.com/Closelly/aiplc-workflows/releases/latest/download/install.sh | sh
 ```
+
+El instalador detecta tu equipo, descarga el ejecutable nativo, verifica su SHA-256,
+instala la metodología y las skills de Codex, configura el PATH y ejecuta el
+comprobador básico. **No necesitas clonar el código ni instalar Bun o Node.js para
+empezar.** Se requieren Git y OpenSSH; si faltan, el instalador explica el bloqueo.
+No usa sudo. Abre una terminal nueva al terminar y comprueba:
+
+```sh
+closelly-aiplc doctor --core
+```
+
+| Quieres… | Continúa en… |
+| --- | --- |
+| Crear tu primer producto y trabajar por chat | [Guía de inicio](docs/getting-started.md) |
+| Elegir versión, actualizar o desinstalar | [Instalación](docs/installation.md) |
+| Contribuir o compilar desde el código | [Contribuir](CONTRIBUTING.md) |
+| Preparar una release pública | [Publicación](docs/releasing.md) |
+| Entender estados, firmas y recuperación | [Arquitectura](docs/architecture.md) |
+
+## Cómo se usa desde el chat
+
+1. Instala la herramienta una vez en tu computador.
+2. Abre en Codex la carpeta donde quieres trabajar y pide: **“Usa
+   `$closelly-aiplc-po` para crear mi producto. Guíame paso a paso y detente antes de
+   cualquier aprobación.”** El asistente acuerda el nombre, una carpeta nueva y
+   las identidades necesarias antes de crear el producto.
+3. Conversa sobre tu cliente y el problema. El asistente investiga, hace preguntas
+   y prepara documentos; la CLI conserva y verifica el estado real.
+4. Para retomar, abre la carpeta del producto y pide que continúe desde el estado
+   actual. `po resume` entrega el encargo; el asistente realiza el trabajo.
+
+El recorrido integrado requiere acceso a la carpeta y a una terminal. En un chat de
+ChatGPT sin ese acceso, se pueden discutir propuestas, pero hay que trasladar los
+archivos y ejecutar los comandos localmente. Este repositorio distribuye una CLI y
+skills locales; todavía no incluye un plugin instalable de ChatGPT.
+
+La instalación básica permite empezar Discovery. La producción del video de
+handoff requiere herramientas adicionales: [configuración multimedia](docs/video.md).
 
 ## Iniciar un producto
 
@@ -132,3 +160,13 @@ tags, revisión del digest o tag por un canal confiable y permisos de repositori
 administrados. Detalles en [arquitectura y recuperación](docs/architecture.md).
 
 Consulta [cómo se probó](docs/verification.md) y `closelly-aiplc help`.
+
+## Comunidad y licencia
+
+Consulta [CONTRIBUTING.md](CONTRIBUTING.md), el [código de conducta](CODE_OF_CONDUCT.md),
+la [política de seguridad](SECURITY.md) y el [historial de cambios](CHANGELOG.md).
+El código propio se distribuye bajo [MIT](LICENSE); las dependencias conservan
+sus licencias en [los avisos de terceros](THIRD_PARTY_NOTICES.md).
+
+Inspirado en [AWS AI-DLC Workflows](https://github.com/awslabs/aidlc-workflows).
+Proyecto independiente, sin afiliación ni respaldo de AWS u OpenAI.

@@ -1,0 +1,34 @@
+name: Reportar un problema
+description: Algo no funciona como esperabas.
+title: '[Bug] '
+body:
+  - type: markdown
+    attributes:
+      value: No adjuntes claves, credenciales ni documentos privados. Para vulnerabilidades usa SECURITY.md.
+  - type: input
+    id: version
+    attributes:
+      label: Versión
+      description: Salida de closelly-aiplc version.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Equipo y entorno
+      placeholder: macOS ARM64, Linux x64 o WSL; Codex o terminal.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Pasos para reproducir
+      description: Incluye comando, resultado esperado y resultado observado.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Mensaje o diagnóstico
+      description: Copia el error o doctor --core tras retirar información privada.
+      render: text
