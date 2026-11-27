@@ -1,5 +1,8 @@
 # Closelly AI-PLC Workflows
 
+[![CI](https://github.com/Closelly/aiplc-workflows/actions/workflows/ci.yml/badge.svg)](https://github.com/Closelly/aiplc-workflows/actions/workflows/ci.yml)
+[Licencia MIT](LICENSE) · [Inicio rápido](docs/getting-started.md) · [Contribuir](CONTRIBUTING.md)
+
 Closelly AI-PLC lleva un producto nuevo desde su idea hasta la entrega comercial y la
 preparación técnica. La CLI `closelly-aiplc` controla el orden, la trazabilidad, las
 aprobaciones y el sello Git. ChatGPT/Codex investiga, redacta y guía a cada responsable
@@ -7,9 +10,8 @@ usando los encargos del motor y las Agent Skills.
 
 ## Empieza aquí
 
-**Estado: versión inicial 0.1.0.** El código está preparado para publicación pública;
-la descarga con un solo comando estará disponible al publicar la primera release
-en [GitHub](https://github.com/Closelly/aiplc-workflows/releases).
+**Estado: versión inicial 0.1.0.** Consulta los paquetes y notas en
+[Releases](https://github.com/Closelly/aiplc-workflows/releases).
 
 En macOS, Linux o WSL, ejecuta en una terminal:
 

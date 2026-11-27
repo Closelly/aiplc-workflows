@@ -14,8 +14,8 @@ No instala un cliente de Codex ni configura cuentas de IA.
 
 ## Instalación normal
 
-El repositorio público es `Closelly/aiplc-workflows`. El comando estará disponible
-al publicarse una release con sus paquetes:
+El siguiente comando instala la última release estable publicada en
+`Closelly/aiplc-workflows`:
 
 ```sh
 curl -fsSL https://github.com/Closelly/aiplc-workflows/releases/latest/download/install.sh | sh

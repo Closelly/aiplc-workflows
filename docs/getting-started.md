@@ -6,8 +6,7 @@ para preparar su implementación. No necesitas trabajar con ambos a la vez.
 
 ## 1. Instala una vez
 
-Después de publicarse la primera release, usa el comando del README con la URL real
-del repositorio. Abre una terminal nueva y ejecuta `closelly-aiplc doctor --core`.
+Usa el comando de instalación del README. Abre una terminal nueva y ejecuta `closelly-aiplc doctor --core`.
 Si la skill no aparece en Codex, abre una sesión nueva o reinicia la aplicación.
 
 ## 2. Pide ayuda en el chat

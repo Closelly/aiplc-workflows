@@ -28,8 +28,8 @@ estructura y trazabilidad del contenido, y el PO de un producto real debe valida
 las fuentes investigadas, el prototipo, la estrategia y la calidad editorial.
 Se verificaron el encargo para Codex y el formato e instalación de las skills.
 No se ejecutó un proyecto real de punta a punta en una sesión de inferencia.
-Linux, Windows, proveedores TTS externos, publicación remota e identidad de
-organización quedan fuera de las verificaciones de este lanzamiento.
+El render multimedia en Linux y Windows, los proveedores TTS externos y la identidad
+de organización quedan fuera de la verificación multimedia local de este lanzamiento.
 
 ## Instalador público y empaquetado
 
@@ -46,5 +46,5 @@ La ampliación del instalador se verificó en macOS ARM64 con Bun 1.4.5:
   colisiones de skills, distribución local y desinstalación conservando datos ajenos.
 
 El ensayo local no acredita descarga pública ni ejecución en otros sistemas. Los
-workflows de GitHub comprobarán macOS ARM64/x64 y Linux ARM64/x64 al subir el código
-y antes de preparar cada release. Los resultados observados quedan en Actions.
+workflows de GitHub ejecutan las comprobaciones en macOS ARM64/x64 y Linux ARM64/x64
+al subir el código y antes de preparar cada release. Los resultados observados quedan en Actions.
