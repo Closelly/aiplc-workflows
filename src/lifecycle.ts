@@ -95,11 +95,11 @@ export class Lifecycle {
       status === "AWAITING_DEV" ? (this.repo.config.version === 2 ? "Comparte la invitación y el repositorio con el DEV/OPS indicado." :
         "Entrega el repositorio y su tag al DEV. El DEV ejecuta closelly-aiplc dev onboard.") :
       status === "READY" ? "Continúa con tu proceso de desarrollo habitual." :
-      item ? `closelly-aiplc dev ack ${item.id} --note "..."` :
+      item ? `closelly-aiplc dev ack ${item.id} --prepare --note "Revisión del paso" --json` :
       phase?.final === "seal" ? "closelly-aiplc po handoff" :
-      phase?.final === "ready" ? "closelly-aiplc dev ready --note \"...\"" :
+      phase?.final === "ready" ? "closelly-aiplc dev ready --prepare --note \"Revisión de preparación técnica\" --json" :
       phase?.gate && !state.approvals.some(a => a.phase === phase.id) ?
-        `closelly-aiplc ${role} approve --note "..."` : `closelly-aiplc ${role} advance`;
+        `closelly-aiplc ${role} approve --prepare --note "Revisión de la fase" --json` : `closelly-aiplc ${role} advance`;
     return {
       project: this.repo.config.name, role, status, next, integrity, phase: phase?.id, title: phase?.title,
       gate: phase?.gate, checklistCurrent: item, checklistDone: state.checklist.length,
@@ -143,7 +143,10 @@ export class Lifecycle {
       requireThat(item && item.id === id, `El siguiente paso es ${item?.id ?? "la aprobación de onboarding"}.`);
       for (const path of item.resources) requireThat(entry(this.repo.path(path))?.isFile(), `Falta el recurso ${path}.`);
       const hash = checklistDigest(this.repo, item, state.baselineDigest!);
-      if (id === "video-briefing") await confirm("Confirma que viste el MP4 y revisaste su voz, capítulos y subtítulos.", hash);
+      await confirm(id === "video-briefing" ? "Confirma que viste el MP4 y revisaste su voz, capítulos y subtítulos." :
+        `Confirma que revisaste ${item.title}.\n${item.resources.join("\n")}`, hash);
+      requireThat(checklistDigest(this.repo, item, state.baselineDigest!) === hash,
+        "Los recursos cambiaron durante la revisión. Presenta la versión actual antes de confirmar.");
       const receipt = access.receipt("onboard:" + id, hash, note);
       save(this.repo, appendEvent({ ...state, checklist: [...state.checklist, receipt] },
         event("acknowledge", access, id)));
@@ -237,7 +240,7 @@ export class Lifecycle {
       const detail = {
         phase: phase.id, status: "AWAITING_REVIEW",
         productPackage: onboardingPath(), commercialPackage: handoff + "/commercial-handoff.md",
-        next: "Revisa el paquete y completa validation-report.md. Confirma con closelly-aiplc po approve --note \"...\" y repite po handoff.",
+        next: "Revisa el paquete y completa validation-report.md. Prepara po approve con --prepare, presenta la revisión en el chat y registra la respuesta explícita con --review y --chat-response antes de repetir po handoff.",
       };
       if (prepare) return detail;
       const approved = state.approvals.some(approval => approval.phase === phase.id);
@@ -318,7 +321,7 @@ export class Lifecycle {
       const question = state.clarifications.find(item => item.id === id);
       requireThat(question && !question.answer, "La pregunta no existe o ya fue respondida.");
       const hash = questionDigest(question);
-      await confirm(`Aclaración ${id}\n${question.question}\nSi cambia el alcance, registra primero la decisión aprobada en docs/business y cítala en la respuesta.`, hash);
+      await confirm(`Aclaración ${id}\n${question.question}\nRespuesta propuesta: ${note}\nSi cambia el alcance, registra primero la decisión aprobada en docs/business y cítala en la respuesta.`, hash);
       const answer = access.receipt("answer:" + id, hash, note);
       const clarifications = state.clarifications.map(item => item.id === id ? { ...item, answer } : item);
       save(this.repo, appendEvent({ ...state, clarifications }, event("answer", access, undefined, id)));

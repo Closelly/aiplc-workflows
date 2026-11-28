@@ -34,6 +34,23 @@ son firmas criptográficas ni certifican titularidad del nombre. El equipo admin
 el acceso al repositorio. Un propietario del disco puede modificar controles locales.
 El motor no administra cuentas, invitaciones por correo ni un servicio de autenticación.
 
+## Confirmación desde el chat
+
+Las operaciones de revisión aceptan `--prepare`: validan y devuelven un `review`
+sin escribir una aprobación ni avanzar el estado. La confirmación puede registrarse
+sin TTY con `--review HASH --chat-response RESPUESTA`, manteniendo nota y argumentos.
+La clave de revisión incluye producto, comando, argumentos, nota y digest del
+contenido. Una edición, otro producto o una propuesta distinta invalida esa clave.
+Las comprobaciones de identidad y los validadores siguen ejecutándose.
+
+La respuesta literal se conserva en la nota del recibo, con su formato original.
+No se reescriben schemas, snapshots ni entregas de productos anteriores. El asistente
+es responsable de registrar una respuesta humana real: la CLI no verifica que un
+texto provenga de un mensaje autenticado del chat. El modo manual por TTY se conserva.
+La pauta de conversación de la CLI actual sustituye instrucciones antiguas de
+interacción, manteniendo intacta la metodología fijada al crear cada producto.
+Consulta [conversation.md](conversation.md).
+
 ## Archivo histórico y documentación vigente
 
 - `docs/aiplc/state.json` y `artifact-manifest.json` registran el progreso PO.

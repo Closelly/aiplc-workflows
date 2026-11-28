@@ -5,6 +5,17 @@ pueden existir cambios incompatibles, que se señalarán expresamente.
 
 ## Unreleased
 
+Sin cambios pendientes.
+
+## 0.2.1 — 2026-11-28
+
+- Confirmación única en el chat: la persona decide y el asistente registra la
+  respuesta, sin exigir otra confirmación en una consola.
+- Preparación de revisiones sin cambios de estado y comprobación de producto,
+  operación, propuesta y documentos antes de registrar una respuesta literal.
+- Preguntas breves en el control nativo disponible del harness, con una decisión
+  por vez, reutilización de respuestas y alternativa sencilla en el chat.
+- Compatibilidad con productos anteriores sin modificar snapshots, schemas o sellos.
 - Mensaje de instalación con el comando oficial, lectura de las guías y ayuda para
   empezar en el mismo chat. El texto se muestra completo también en móvil.
 - Apertura de Codex solo mediante el botón de la

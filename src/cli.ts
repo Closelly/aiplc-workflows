@@ -1,10 +1,10 @@
 #!/usr/bin/env bun
 import { parseArgs } from "node:util";
-import { createInterface } from "node:readline/promises";
+import { confirmation, ConfirmationRequest } from "./confirmation";
 import { Blocked, requireThat } from "./files";
 import { workOrder } from "./harness";
 import { audit, updateKnowledge } from "./knowledge";
-import { Lifecycle, assertArea, type Confirm } from "./lifecycle";
+import { Lifecycle, assertArea } from "./lifecycle";
 import { version } from "./methodology";
 import type { Config, Role, TtsConfig } from "./model";
 import { doctor } from "./providers";
@@ -42,6 +42,11 @@ Compartidos
   knowledge audit
   knowledge update business|technical|operations RUTA --from ARCHIVO --reference ORIGEN --note MOTIVO [--as po|dev] [--scope-change]
   version | help
+
+Revisiones por chat (approve, ack, ready, answer y knowledge update business)
+  --prepare --note NOTA                 Preparar la revisión sin registrar una decisión
+  --review HASH --chat-response TEXTO   Registrar la respuesta explícita sobre esa revisión
+La persona responde en el chat; el asistente ejecuta los comandos.
 `;
 
 const string = { type: "string" as const };
@@ -53,35 +58,25 @@ const allOptions = {
   idea: string, language: string, note: string, prepare: bool, "force-render": bool, reference: string,
   blocking: bool, harness: string, tts: string, voice: string, "credential-env": string,
   probe: bool, core: bool, as: string, from: string, "scope-change": bool,
+  review: string, "chat-response": string,
 };
 const global = ["repo", "json", "key"];
+const reviewFlags = ["note", "prepare", "review", "chat-response"] as const;
 const rules: Record<string, { flags?: (keyof typeof allOptions)[]; count?: number }> = {
   "po init": { flags: ["po-key", "dev-key", "po-id", "dev-id", "name", "idea", "language", "po-name", "po-email"], count: 1 },
   "po identify": { flags: ["name"] }, "dev identify": { flags: ["name"] },
   "po invite": { flags: ["dev-name"] },
   "po start": {}, "po resume": {}, "po status": {}, "po scaffold": {}, "po validate": {}, "po advance": {},
-  "po approve": { flags: ["note"] }, "po revise": { flags: ["note"], count: 1 },
-  "po handoff": { flags: ["prepare", "force-render"] }, "po answer": { flags: ["note"], count: 1 },
+  "po approve": { flags: [...reviewFlags] }, "po revise": { flags: ["note"], count: 1 },
+  "po handoff": { flags: ["prepare", "force-render"] }, "po answer": { flags: [...reviewFlags], count: 1 },
   "dev onboard": { flags: ["name", "email"] }, "dev resume": {}, "dev status": {}, "dev scaffold": {}, "dev validate": {}, "dev advance": {},
-  "dev ack": { flags: ["note"], count: 1 }, "dev approve": { flags: ["note"] },
+  "dev ack": { flags: [...reviewFlags], count: 1 }, "dev approve": { flags: [...reviewFlags] },
   "dev clarify": { flags: ["note", "reference", "blocking"] }, "dev architect": {}, "dev plan": {},
-  "dev ready": { flags: ["note"] },
+  "dev ready": { flags: [...reviewFlags] },
   "doctor": { flags: ["probe", "core", "tts", "voice", "language", "credential-env"] },
   "config": { flags: ["harness", "tts", "voice", "language", "credential-env"] },
   "harness context": { count: 1 }, "knowledge audit": {},
-  "knowledge update": { flags: ["as", "from", "reference", "note", "scope-change"], count: 2 },
-};
-
-const confirm: Confirm = async (message, _snapshot) => {
-  requireThat(process.stdin.isTTY && process.stderr.isTTY,
-    "La aprobación requiere a la persona responsable en una terminal interactiva.");
-  const terminal = createInterface({ input: process.stdin, output: process.stderr });
-  try {
-    const token = "CONFIRMAR";
-    process.stderr.write(message + "\n");
-    const answer = await terminal.question(`Escribe ${token}: `);
-    requireThat(answer.trim() === token, "La confirmación no coincide.");
-  } finally { terminal.close(); }
+  "knowledge update": { flags: ["as", "from", "reference", "scope-change", ...reviewFlags], count: 2 },
 };
 
 function role(value: string): Role {
@@ -156,7 +151,15 @@ async function main() {
 
   const repo = new Repository(values.repo ?? process.cwd());
   const lifecycle = new Lifecycle(repo, values.key);
-  const note = () => needed(values.note, "note");
+  const fromChat = confirmation({ prepare: !!values.prepare && command !== "po handoff",
+    review: values.review, response: values["chat-response"],
+    context: { projectId: repo.config.projectId, command, args, note: values.note } });
+  const confirm = fromChat.confirm;
+  const note = () => fromChat.note(needed(values.note, "note"));
+  if (command === "knowledge update" && args[0] !== "business") {
+    requireThat(!values.prepare && !values.review && !values["chat-response"],
+      "Las opciones de revisión se usan para knowledge update business.");
+  }
   const progress = (message: string) => console.error(message);
   const currentOrder = (forRole: Role, expected?: string) => {
     if (forRole === "dev") lifecycle.access("dev", "work-order");
@@ -227,6 +230,10 @@ async function main() {
 }
 
 main().catch(error => {
+  if (error instanceof ConfirmationRequest) {
+    display({ status: "AWAITING_CONFIRMATION", review: error.review, message: error.message }, process.argv.includes("--json"));
+    return;
+  }
   const message = error instanceof Error ? error.message : String(error);
   if (process.argv.includes("--json")) console.error(JSON.stringify({ status: "BLOCKED", message }));
   else console.error("Bloqueado. " + message);

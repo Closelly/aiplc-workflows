@@ -1,4 +1,4 @@
-# Actualizar a 0.2
+# Actualizar Closelly AI-PLC
 
 La versión 0.2 permite crear productos con el nombre del PO y elegir al DEV/OPS al
 preparar la entrega. El DEV/OPS recibe una invitación y se identifica con el nombre
@@ -6,9 +6,21 @@ que indicó el PO. No se necesitan claves para este recorrido.
 
 ## Actualizar la herramienta
 
-Cuando 0.2 esté publicada, repite el comando de instalación del README. Abre una
+Repite el comando de instalación del README para instalar la última versión publicada. Abre una
 terminal nueva y comprueba `closelly-aiplc version`. En el chat pide al asistente
-que vuelva a leer la skill instalada antes de empezar un producto nuevo.
+que vuelva a leer la skill instalada antes de continuar.
+
+## Confirmaciones por chat desde 0.2.1
+
+El asistente prepara la revisión, te pregunta en el chat y registra tu respuesta.
+Ya no tienes que confirmar otra vez en una terminal. Pídele que vuelva a leer la
+skill actualizada y retome el estado real. Las preguntas usan el control nativo
+disponible, con una decisión por vez y opciones breves.
+
+Puedes continuar un producto de 0.2.0 con este mecanismo. No modifica su historial,
+sus schemas ni los documentos de la metodología fijada. Las decisiones ya registradas
+se conservan. Una aprobación aún pendiente se prepara y se presenta con el mecanismo
+actual antes de registrarla. No cierres el paso editando a mano state.json.
 
 ## Si todavía no creaste un producto
 

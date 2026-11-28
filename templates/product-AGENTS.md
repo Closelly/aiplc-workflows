@@ -9,3 +9,9 @@ Ejecuta el grupo de comandos de tu rol. El PO termina en el handoff. El DEV inic
 `closelly-aiplc dev onboard` tras recibir el repositorio y su tag Git. El motor verifica
 la entrega y la confirmación de cada rol. Mantén las tres carpetas vigentes al cambiar
 comportamiento, arquitectura u operación y registra la referencia de la decisión.
+
+La persona responde y confirma en el chat; el asistente ejecuta los comandos y
+registra solo respuestas explícitas sobre la revisión presentada. Usa el control
+de preguntas disponible, con una decisión por vez y contexto breve. No pidas copiar
+comandos ni confirmar otra vez en una consola. Consulta la pauta de conversación
+que entrega la CLI actual, conservando los documentos históricos de la metodología.

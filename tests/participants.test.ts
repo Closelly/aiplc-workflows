@@ -94,3 +94,40 @@ test("the sealed invitation and accepted participant stay bound to the named rec
   expect(sameName("Ana Muñoz", "ana munoz")).toBe(true);
   expect(sameName("Ana Muñoz", "Otra Ana")).toBe(false);
 });
+
+test("DEV reviews and PO clarification answers can be confirmed once in chat", async () => {
+  const p = setup(); const repo = await sealedIdentityFixture(p); const dev = new Lifecycle(repo);
+  await dev.onboard("Ana Muñoz");
+  const cli = join(import.meta.dir, "../src/cli.ts");
+  const command = (args: string[]) => run(process.execPath, [cli, "--repo", repo.root, "--json", ...args]);
+  const reviewStep = (id: string) => {
+    const args = ["dev", "ack", id, "--note", "Fixture: revisión de los recursos del paso."];
+    const count = repo.state("dev").checklist.length;
+    const preview = command([...args, "--prepare"]); expect(preview.status).toBe(0);
+    expect(repo.state("dev").checklist).toHaveLength(count);
+    const review = JSON.parse(preview.stdout).review;
+    expect(command([...args, "--review", review, "--chat-response", "Revisé estos recursos."]).status).toBe(0);
+    expect(repo.state("dev").checklist).toHaveLength(count + 1);
+  };
+  for (const step of repo.method.workflows.dev.phases[0].checklist!) reviewStep(step.id);
+  const question = await dev.clarify("¿Cuándo se confirma un pedido?", "docs/aiplc/02-product-definition/product-definition.md", false);
+  await new Lifecycle(repo).identify("po", "Luis Pérez");
+  const args = ["po", "answer", question.id, "--note", "Cuando el usuario revisa el detalle del pedido."];
+  const preview = command([...args, "--prepare"]); expect(preview.status).toBe(0);
+  expect(repo.state("dev").clarifications[0].answer).toBeUndefined();
+  const review = JSON.parse(preview.stdout).review;
+  const changed = [...args]; changed[4] = "Cuando un operador revisa el pedido.";
+  expect(command([...changed, "--review", review, "--chat-response", "sí"]).status).toBe(2);
+  expect(command([...args, "--review", review, "--chat-response", "Sí, esa es la respuesta."]).status).toBe(0);
+  expect(repo.state("dev").clarifications[0].answer?.note).toContain("Sí, esa es la respuesta.");
+});
+
+test("resources edited while DEV confirms are not acknowledged as reviewed", async () => {
+  const p = setup(); const repo = await sealedIdentityFixture(p); const dev = new Lifecycle(repo);
+  await dev.onboard("Ana Muñoz");
+  const step = repo.method.workflows.dev.phases[0].checklist![0];
+  await expect(dev.acknowledge(step.id, approved, async () => {
+    atomic(repo.path(step.resources[0]), "Contenido modificado durante la revisión de prueba.");
+  })).rejects.toThrow("recursos cambiaron");
+  expect(repo.state("dev").checklist).toHaveLength(0);
+});

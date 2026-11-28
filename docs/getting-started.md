@@ -34,7 +34,11 @@ separa evidencia de hipótesis y prepara los documentos. Discovery empieza con
 Después vienen definición, IA, marca, experiencia, especificaciones, validación,
 estrategia comercial y entrega. Las decisiones importantes las revisas tú. Cuando
 corresponda una aprobación, la herramienta te muestra qué se está revisando y te
-pide confirmar; el registro conserva tu nombre, la fecha y los documentos revisados.
+pide confirmar en el chat. El asistente registra tu respuesta y continúa, sin
+pedirte ejecutar comandos ni confirmar de nuevo en una consola. El registro
+conserva tu nombre, tu respuesta, la fecha y los documentos revisados.
+Las preguntas aparecen en el control nativo disponible, una decisión por vez y con
+opciones breves. Si tu sesión no tiene ese control, se hacen en el propio chat.
 
 `po status` muestra el avance. `po resume` entrega al asistente el trabajo pendiente;
 la investigación y la redacción las realiza Codex con las herramientas del chat.

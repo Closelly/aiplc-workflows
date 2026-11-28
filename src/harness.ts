@@ -26,7 +26,12 @@ export interface HarnessAdapter {
 const common = (order: WorkOrder) =>
   `Trabaja en ${order.title} para ${order.project}. Tu rol es ${order.role.toUpperCase()}. ${order.focus}
 Lee los insumos y usa el encargo estructurado para elaborar las salidas no generadas. Organiza las perspectivas como roles del mismo harness.
-No firmes ni representes decisiones humanas. Para un gate, presenta la evidencia al responsable y pídele que confirme en su terminal.
+La persona decide en el chat y tú ejecutas los comandos. No inventes respuestas ni aprobaciones.
+Pregunta una decisión por vez, con una frase de contexto y 2–3 opciones breves cuando sean útiles. Reutiliza lo ya respondido; evita cuestionarios largos y resúmenes que mezclen preguntas.
+Para una aprobación, ejecuta el comando con --prepare --note NOTA --json antes de preguntar. Presenta una síntesis breve, los documentos revisables y una sola pregunta. Espera la respuesta explícita.
+Conserva el review y los argumentos de esa preparación. Tras un sí inequívoco, repite el comando sin --prepare, con --review HASH --chat-response RESPUESTA_LITERAL. Tú registras la decisión; la persona no copia comandos ni escribe CONFIRMAR en una consola.
+Si cambia la revisión, prepara y presenta la nueva versión. Si pide cambios, edita primero y vuelve a revisar. Nunca registres una opción preseleccionada, el silencio o una respuesta a otra pregunta como aprobación.
+Esta pauta de conversación actual sustituye indicaciones antiguas que manden confirmar en una terminal; conserva intactos la metodología fijada, los artefactos y sus verificaciones.
 Preserva las fuentes y las decisiones dentro del repo. Si falta una capacidad, reporta el bloqueo con el insumo o comando faltante.
 ${order.step ? "Guía solo el paso actual y espera al DEV antes de registrar la revisión: " + order.step.title : ""}`;
 
@@ -35,11 +40,12 @@ const adapters: Record<string, HarnessAdapter> = {
     id: "codex",
     instructions: order => common(order) + `
 Usa $closelly-aiplc-${order.role} si está instalado. Navega y captura con las herramientas que este chat tenga habilitadas.
-Entrega las rutas para revisión. La persona responsable confirma cada aprobación en su terminal.`,
+Usa el control de preguntas del chat: request_user_input si está habilitado y permitido en el modo actual; si no, request_user_input_async cuando exista, manteniendo la pregunta pendiente hasta recibir respuesta. No cambies de modo para forzarlo. Si no hay control utilizable, haz una pregunta breve con opciones numeradas en el chat.
+Cada control contiene una pregunta por defecto; como máximo tres si están estrechamente relacionadas. No imprimas JSON, YAML ni especificaciones de preguntas al usuario.`,
   },
   portable: {
     id: "portable",
-    instructions: common,
+    instructions: order => common(order) + "\nUsa el control de preguntas nativo que el entorno tenga habilitado; si no existe, una pregunta breve y opciones numeradas en el chat. No inventes herramientas ni obligues a cambiar de entorno.",
   },
 };
 

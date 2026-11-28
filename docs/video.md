@@ -52,7 +52,8 @@ proveedor sin registrar la clave.
    comprueba audio, capítulos, resolución y consistencia del paquete con FFprobe.
 4. Abre el video y revisa legibilidad, voz, subtítulos, cortes, capítulos y cobertura.
    Recorre el prototipo y revisa los tres PowerPoint. Registra la revisión y cualquier
-   corrección en `validation-report.md`. El PO firma después de revisar el paquete.
+   corrección en `validation-report.md`. El PO confirma en el chat después de revisar
+   el paquete; el asistente registra su respuesta con la revisión correspondiente.
 
 El paquete `video-source/` contiene HTML, animación, audio WAV, capturas, guion,
 storyboards y comprobaciones. Ejecuta `sh reproduce.sh /ruta/film.mp4` desde ese

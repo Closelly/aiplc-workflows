@@ -25,6 +25,8 @@ permisos de acceso, cuentas verificadas o controles del repositorio del equipo.
 Las confirmaciones se vinculan a los documentos revisados y el sello Git verifica
 la integridad de la entrega. Los nombres y los correos opcionales se guardan en los
 documentos del producto. Comparte ese repositorio con las personas correspondientes.
+En el recorrido por chat, el asistente transcribe la respuesta explícita y la CLI
+comprueba la revisión; no autentica el origen de un texto recibido por otro proceso.
 Los productos anteriores conservan sus claves privadas fuera de Git y su mecanismo
 original; consulta docs/upgrading.md.
 

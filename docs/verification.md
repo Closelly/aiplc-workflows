@@ -82,3 +82,18 @@ escritorio y móvil, la solicitud codificada y la alternativa de copia.
 Los diagramas del README se sustituyeron por SVG con posiciones y saltos de línea
 definidos. Se revisaron las imágenes en escritorio y móvil y se comprobaron las
 cajas de sus 69 textos: sin superposiciones ni desbordamientos horizontales.
+
+## Confirmaciones y preguntas por chat 0.2.1
+
+La suite local pasó 31 pruebas, con 1 render multimedia omitido y 0 fallos.
+Se verificaron preparación sin escribir decisiones, registro no interactivo de una
+respuesta explícita, conservación de sus palabras en el recibo y rechazo de una
+revisión cuando cambian documentos, propuesta o entrada de negocio. Las pruebas
+también cubren revisiones DEV, incluido el video, y respuestas del PO a aclaraciones.
+Los paquetes de transferencia de esos casos son sintéticos; no acreditan una nueva
+reproducción o render multimedia real.
+
+Pasaron tipos, schemas, comprobación pública y los validadores de ambas skills.
+La selección de controles de preguntas es una instrucción adaptada a las herramientas
+que cada sesión tenga disponibles. Las pruebas de CLI no acreditan una sesión de
+inferencia completa ni la presencia de un formulario nativo en todos los clientes.

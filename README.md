@@ -24,7 +24,7 @@ En los comandos de la herramienta, el rol DEV/OPS se identifica como `dev`.
 
 ## Empieza aquí
 
-**Estado: versión 0.2.0.** Consulta los paquetes y notas en
+**Estado: versión 0.2.1.** Consulta los paquetes y notas en
 [Releases](https://github.com/Closelly/aiplc-workflows/releases).
 
 **[Instalar Closelly AI-PLC con Codex](https://closelly.github.io/aiplc-workflows/)**
@@ -76,6 +76,11 @@ Las revisiones importantes se confirman por la persona responsable y quedan
 registradas con su nombre, fecha y documentos revisados. No necesitas elegir al
 DEV/OPS para empezar Discovery.
 
+Respondes las preguntas y confirmas dentro del chat. El asistente usa el control de
+preguntas del entorno cuando está disponible, pregunta una decisión por vez y
+ejecuta los comandos por ti. Un «sí» a la versión presentada basta: la decisión se
+registra sin pedirte otra confirmación en una consola. [Así funciona la conversación](docs/conversation.md).
+
 ## Cómo se usa desde el chat
 
 1. Instala la herramienta una vez en tu computador.
@@ -122,7 +127,8 @@ El estado DEV aparece en `docs/technical/aiplc/state.json` al iniciar su onboard
 
 Abre el nuevo producto en Codex e invoca `$closelly-aiplc-po`. Si prefieres otro entorno,
 `config --harness portable` y `harness context po --json` exponen el mismo encargo.
-El PO revisa los resultados y confirma las aprobaciones en una terminal interactiva.
+El PO revisa los resultados y confirma las aprobaciones en el chat. El asistente
+registra esa respuesta y comprueba el estado antes de continuar.
 Al preparar la entrega, indica el nombre de quien continuará como DEV/OPS.
 
 ![Etapas del PO: entender, diseñar, validar y entregar con una invitación al DEV/OPS.](docs/images/po-workflow.svg)
@@ -144,7 +150,7 @@ marca el paso del trabajo de definición al recorrido del DEV/OPS.
 
 - `po status` muestra avance y faltantes. `po resume` entrega el encargo a Codex con instrucciones, schemas y salidas.
 - `po scaffold` crea borradores Markdown sin sobrescribir trabajo. `po validate` comprueba artefactos. `po advance` cierra la fase activa.
-- `po approve --note "Qué revisé y qué decidí"` registra el gate de la fase y la versión exacta de los archivos.
+- El asistente prepara `po approve --prepare` y registra la respuesta del PO con `--review` y `--chat-response`, conservando la versión exacta de los archivos.
 - `po revise ID-FASE --note "Motivo y efecto"` vuelve a la primera fase afectada. Renueva las aprobaciones posteriores y conserva los archivos para revisarlos.
 
 Para preparar la entrega, completa `briefing.json`, `video-plan.json` y el handoff
@@ -155,9 +161,10 @@ Revisa el paquete y deja evidencia en `validation-report.md` antes de confirmar 
 closelly-aiplc po invite --dev-name "Ana"
 closelly-aiplc doctor --probe
 closelly-aiplc po handoff --prepare
-closelly-aiplc po approve --note "Revisé el prototipo, las presentaciones y el MP4."
-closelly-aiplc po handoff
 ```
+
+Después de que apruebes el paquete en el chat, el asistente registra la decisión y
+ejecuta `po handoff` para cerrar la entrega.
 
 El cierre conserva la definición y la invitación en una entrega Git. Comparte el
 repositorio y `docs/aiplc/09-handoff/INVITACION-DEV.md` con la persona indicada. El PO
@@ -186,7 +193,7 @@ closelly-aiplc dev resume
 
 El recorrido presenta negocio, pitch, presentaciones, película, prototipo, estructura,
 requisitos y dudas en ese orden. El paso `video-briefing` exige una confirmación
-interactiva. Al terminar, redacta `understanding.md`, ejecuta `dev approve` y `dev advance`.
+en el chat. Al terminar, redacta `understanding.md`; el asistente registra la aprobación y ejecuta `dev advance`.
 `dev clarify --reference RUTA --note "Pregunta" --blocking` registra una duda que el
 PO puede responder con `po answer Q-ID --note "Respuesta"`. Un cambio de alcance va
 primero en la documentación vigente de negocio mediante `knowledge update`.
