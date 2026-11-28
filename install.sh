@@ -211,4 +211,4 @@ printf '\nInstalado: %s\n' "$prefix/bin/closelly-aiplc"
 printf 'Abre una terminal nueva o ejecuta: . %s\n' "$(quote "$prefix/env")"
 printf 'Después: closelly-aiplc doctor --core\n'
 printf 'En Codex, abre la carpeta de tu producto y pide: Usa $closelly-aiplc-po para guiarme.\n'
-printf 'Las claves y el producto se preparan después; la instalación no registra aprobaciones.\n'
+printf 'Para empezar un producto, solo necesitas tu nombre y una idea.\n'

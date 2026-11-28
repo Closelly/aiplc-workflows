@@ -22,5 +22,5 @@ if [ -f "$prefix/.skills-dir" ]; then
   done
 fi
 rm -rf -- "$prefix"
-echo 'Closelly AI-PLC desinstalado. Tus productos y claves se conservan.'
+echo 'Closelly AI-PLC desinstalado. Tus productos y documentos se conservan.'
 echo 'La línea de configuración de la terminal queda inactiva; puedes retirarla si lo deseas.'
