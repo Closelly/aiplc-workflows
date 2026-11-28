@@ -27,11 +27,11 @@ En los comandos de la herramienta, el rol DEV/OPS se identifica como `dev`.
 **Estado: versión 0.2.0.** Consulta los paquetes y notas en
 [Releases](https://github.com/Closelly/aiplc-workflows/releases).
 
-**[Abrir Codex para instalar Closelly AI-PLC](https://closelly.github.io/aiplc-workflows/?open=1)**
+**[Instalar Closelly AI-PLC con Codex](https://closelly.github.io/aiplc-workflows/)**
 
-El enlace abre una solicitud de instalación preparada en la aplicación de escritorio.
-Revísala y envíala en Codex para comenzar. Si el navegador no abre la aplicación,
-la página también permite copiar la solicitud y pegarla en el chat que ya tienes abierto.
+En la página, pulsa **Abrir Codex** para preparar un mensaje breve de instalación.
+También puedes copiarlo al chat que ya tienes abierto. Codex se abre solo cuando
+pulsas el botón.
 
 También puedes instalar directamente en una terminal de macOS, Linux o WSL:
 

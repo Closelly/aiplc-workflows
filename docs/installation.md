@@ -13,13 +13,13 @@ No instala un cliente de Codex ni configura cuentas de IA.
 
 ## Instalar con ayuda de Codex
 
-[Abre Codex con la solicitud de instalación preparada](https://closelly.github.io/aiplc-workflows/?open=1).
-Revisa el mensaje y envíalo para comenzar. Si ya tienes un chat abierto, la página
-permite copiar la solicitud y pegarla allí. Este paso instala y comprueba la CLI y
-sus skills; la preparación de un producto y sus identidades viene después.
+[Instala con ayuda de Codex](https://closelly.github.io/aiplc-workflows/).
+Pulsa **Abrir Codex** y envía el mensaje breve para comenzar. Si ya tienes un chat
+abierto, usa **Copiar mensaje** y pégalo allí. Codex se abre únicamente al pulsar
+el botón; entrar en la página no abre la aplicación.
 
 La aplicación debe estar instalada en tu equipo. Algunos navegadores requieren
-confirmar la apertura o pulsar de nuevo el botón de la página. El mensaje se prepara
+confirmar la apertura. El mensaje se prepara
 mediante el [enlace oficial de nuevo chat](https://learn.chatgpt.com/docs/reference/commands#deep-links)
 y se envía cuando tú lo decidas.
 
