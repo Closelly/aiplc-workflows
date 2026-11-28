@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="920" viewBox="0 0 1000 920" role="img" aria-labelledby="title description">
+  <title id="title">DEV/OPS · Recepción y preparación</title>
+  <desc id="description">El DEV/OPS recibe el producto y su invitación y se identifica con su nombre. Después recorre onboarding, discovery técnico, arquitectura, diseño de IA, planificación y readiness. Al terminar continúa con construcción, pruebas y operación.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/></marker>
+  </defs>
+  <rect width="1000" height="920" rx="20" fill="#ffffff"/>
+  <g font-family="Arial, Helvetica, sans-serif" fill="#0f172a">
+    <text x="40" y="48" font-size="30" font-weight="700" fill="#0f172a" text-anchor="start">DEV/OPS · Recepción y preparación</text>
+    <text x="40" y="78" font-size="20" font-weight="400" fill="#475569" text-anchor="start">Del contexto del producto a la preparación del trabajo técnico.</text>
+    <rect x="120" y="104" width="760" height="78" rx="18" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
+    <text x="500" y="135" font-size="23" font-weight="700" fill="#065f46" text-anchor="middle">Recibe el producto y la invitación</text>
+    <text x="500" y="162" font-size="19" font-weight="400" fill="#065f46" text-anchor="middle">Se presenta con su nombre; se comprueba con el indicado por el PO.</text>
+    <path d="M500 190 L500 230" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="24" y="240" width="952" height="220" rx="16" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="48" y="274" font-size="22" font-weight="700" fill="#334155" text-anchor="start">Comprender y contrastar</text>
+    <rect x="48" y="298" width="280" height="138" rx="12" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5"/>
+    <text x="64" y="330" font-size="21" font-weight="700" fill="#0f172a" text-anchor="start">1. Onboarding</text>
+    <text x="64" y="360" font-size="19" font-weight="400" fill="#334155" text-anchor="start">Recorre el negocio</text>
+    <text x="64" y="384" font-size="19" font-weight="400" fill="#334155" text-anchor="start">y entiende el producto</text>
+    <text x="64" y="417" font-size="17" font-weight="700" fill="#9a3412" text-anchor="start">Revisión del DEV/OPS</text>
+    <path d="M333 367 L352 367" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="360" y="298" width="280" height="138" rx="12" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="376" y="330" font-size="21" font-weight="700" fill="#0f172a" text-anchor="start">2. Discovery técnico</text>
+    <text x="376" y="360" font-size="19" font-weight="400" fill="#334155" text-anchor="start">Viabilidad, restricciones</text>
+    <text x="376" y="384" font-size="19" font-weight="400" fill="#334155" text-anchor="start">y riesgos</text>
+    <path d="M645 367 L664 367" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="672" y="298" width="280" height="138" rx="12" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="688" y="330" font-size="21" font-weight="700" fill="#0f172a" text-anchor="start">3. Arquitectura</text>
+    <text x="688" y="360" font-size="19" font-weight="400" fill="#334155" text-anchor="start">Datos, servicios</text>
+    <text x="688" y="384" font-size="19" font-weight="400" fill="#334155" text-anchor="start">y entornos</text>
+    <path d="M500 468 L500 506" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="24" y="516" width="952" height="220" rx="16" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="48" y="550" font-size="22" font-weight="700" fill="#334155" text-anchor="start">Preparar la ejecución</text>
+    <rect x="48" y="574" width="280" height="138" rx="12" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="64" y="606" font-size="21" font-weight="700" fill="#0f172a" text-anchor="start">4. Diseño de IA</text>
+    <text x="64" y="636" font-size="19" font-weight="400" fill="#334155" text-anchor="start">Evaluación, costos</text>
+    <text x="64" y="660" font-size="19" font-weight="400" fill="#334155" text-anchor="start">y operación</text>
+    <path d="M333 643 L352 643" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="360" y="574" width="280" height="138" rx="12" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="376" y="606" font-size="21" font-weight="700" fill="#0f172a" text-anchor="start">5. Planificación técnica</text>
+    <text x="376" y="636" font-size="19" font-weight="400" fill="#334155" text-anchor="start">Cortes, dependencias</text>
+    <text x="376" y="660" font-size="19" font-weight="400" fill="#334155" text-anchor="start">y pruebas</text>
+    <path d="M645 643 L664 643" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="672" y="574" width="280" height="138" rx="12" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5"/>
+    <text x="688" y="606" font-size="21" font-weight="700" fill="#0f172a" text-anchor="start">6. Readiness técnico</text>
+    <text x="688" y="636" font-size="19" font-weight="400" fill="#334155" text-anchor="start">Revisa la preparación</text>
+    <text x="688" y="660" font-size="19" font-weight="400" fill="#334155" text-anchor="start">para construir</text>
+    <text x="688" y="693" font-size="17" font-weight="700" fill="#9a3412" text-anchor="start">Revisión del DEV/OPS</text>
+    <path d="M500 744 L500 784" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="120" y="794" width="760" height="78" rx="18" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
+    <text x="500" y="825" font-size="23" font-weight="700" fill="#065f46" text-anchor="middle">Preparación lista (READY)</text>
+    <text x="500" y="852" font-size="19" font-weight="400" fill="#065f46" text-anchor="middle">Continúa con construcción, pruebas y operación.</text>
+    <text x="500" y="905" font-size="18" font-weight="400" fill="#475569" text-anchor="middle">Naranja: revisión humana  ·  Verde: resultado del recorrido</text>
+  </g>
+</svg>

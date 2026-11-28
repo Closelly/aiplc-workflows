@@ -5,7 +5,8 @@ pueden existir cambios incompatibles, que se señalarán expresamente.
 
 ## Unreleased
 
-Sin cambios pendientes.
+- Diagramas del README como imágenes SVG con distribución fija para evitar textos
+  superpuestos o saltos de línea distintos en GitHub.
 
 ## 0.2.0 — 2026-11-27
 

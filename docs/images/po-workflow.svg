@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1080" viewBox="0 0 1000 1080" role="img" aria-labelledby="title description">
+  <title id="title">PO · Definición y entrega</title>
+  <desc id="description">Nueve etapas del PO: discovery, definición, oportunidades de IA, marca, UX/UI, especificaciones, validación, marketing y entrega. Las etapas naranjas requieren revisión del PO. La entrega incluye una invitación al DEV/OPS por su nombre.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/></marker>
+  </defs>
+  <rect width="1000" height="1080" rx="20" fill="#ffffff"/>
+  <g font-family="Arial, Helvetica, sans-serif" fill="#0f172a">
+    <text x="40" y="48" font-size="30" font-weight="700" fill="#0f172a" text-anchor="start">PO · Definición y entrega</text>
+    <text x="40" y="78" font-size="20" font-weight="400" fill="#475569" text-anchor="start">De una idea a una definición lista para compartir.</text>
+    <rect x="24" y="104" width="952" height="220" rx="16" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="48" y="138" font-size="22" font-weight="700" fill="#334155" text-anchor="start">Entender y definir</text>
+    <rect x="48" y="162" width="280" height="138" rx="12" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="64" y="194" font-size="21" font-weight="700" fill="#0f172a" text-anchor="start">1. Discovery</text>
+    <text x="64" y="224" font-size="19" font-weight="400" fill="#334155" text-anchor="start">Problema, evidencia</text>
+    <text x="64" y="248" font-size="19" font-weight="400" fill="#334155" text-anchor="start">y necesidades</text>
+    <path d="M333 231 L352 231" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="360" y="162" width="280" height="138" rx="12" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5"/>
+    <text x="376" y="194" font-size="21" font-weight="700" fill="#0f172a" text-anchor="start">2. Definición</text>
+    <text x="376" y="224" font-size="19" font-weight="400" fill="#334155" text-anchor="start">Propuesta, alcance</text>
+    <text x="376" y="248" font-size="19" font-weight="400" fill="#334155" text-anchor="start">y reglas del producto</text>
+    <text x="376" y="281" font-size="17" font-weight="700" fill="#9a3412" text-anchor="start">Revisión del PO</text>
+    <path d="M645 231 L664 231" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="672" y="162" width="280" height="138" rx="12" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="688" y="194" font-size="21" font-weight="700" fill="#0f172a" text-anchor="start">3. Oportunidades de IA</text>
+    <text x="688" y="224" font-size="19" font-weight="400" fill="#334155" text-anchor="start">IA útil y decisiones</text>
+    <text x="688" y="248" font-size="19" font-weight="400" fill="#334155" text-anchor="start">con control humano</text>
+    <path d="M500 332 L500 370" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="24" y="380" width="952" height="220" rx="16" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="48" y="414" font-size="22" font-weight="700" fill="#334155" text-anchor="start">Diseñar la experiencia</text>
+    <rect x="48" y="438" width="280" height="138" rx="12" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5"/>
+    <text x="64" y="470" font-size="21" font-weight="700" fill="#0f172a" text-anchor="start">4. Marca y creatividad</text>
+    <text x="64" y="500" font-size="19" font-weight="400" fill="#334155" text-anchor="start">Identidad, referencias</text>
+    <text x="64" y="524" font-size="19" font-weight="400" fill="#334155" text-anchor="start">y dirección visual</text>
+    <text x="64" y="557" font-size="17" font-weight="700" fill="#9a3412" text-anchor="start">Revisión del PO</text>
+    <path d="M333 507 L352 507" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="360" y="438" width="280" height="138" rx="12" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5"/>
+    <text x="376" y="470" font-size="21" font-weight="700" fill="#0f172a" text-anchor="start">5. UX/UI y prototipo</text>
+    <text x="376" y="500" font-size="19" font-weight="400" fill="#334155" text-anchor="start">Flujos y experiencia</text>
+    <text x="376" y="524" font-size="19" font-weight="400" fill="#334155" text-anchor="start">para probar el producto</text>
+    <text x="376" y="557" font-size="17" font-weight="700" fill="#9a3412" text-anchor="start">Revisión del PO</text>
+    <path d="M645 507 L664 507" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="672" y="438" width="280" height="138" rx="12" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="688" y="470" font-size="21" font-weight="700" fill="#0f172a" text-anchor="start">6. Especificaciones</text>
+    <text x="688" y="500" font-size="19" font-weight="400" fill="#334155" text-anchor="start">Requisitos, datos</text>
+    <text x="688" y="524" font-size="19" font-weight="400" fill="#334155" text-anchor="start">y criterios de aceptación</text>
+    <path d="M500 608 L500 646" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="24" y="656" width="952" height="220" rx="16" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="48" y="690" font-size="22" font-weight="700" fill="#334155" text-anchor="start">Validar y entregar</text>
+    <rect x="48" y="714" width="280" height="138" rx="12" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="64" y="746" font-size="21" font-weight="700" fill="#0f172a" text-anchor="start">7. Validación y pruebas</text>
+    <text x="64" y="776" font-size="19" font-weight="400" fill="#334155" text-anchor="start">Cobertura, recorridos</text>
+    <text x="64" y="800" font-size="19" font-weight="400" fill="#334155" text-anchor="start">y resultados de pruebas</text>
+    <path d="M333 783 L352 783" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="360" y="714" width="280" height="138" rx="12" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5"/>
+    <text x="376" y="746" font-size="21" font-weight="700" fill="#0f172a" text-anchor="start">8. Marketing y ventas</text>
+    <text x="376" y="776" font-size="19" font-weight="400" fill="#334155" text-anchor="start">Estrategia comercial</text>
+    <text x="376" y="800" font-size="19" font-weight="400" fill="#334155" text-anchor="start">y experimentos de growth</text>
+    <text x="376" y="833" font-size="17" font-weight="700" fill="#9a3412" text-anchor="start">Revisión del PO</text>
+    <path d="M645 783 L664 783" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="672" y="714" width="280" height="138" rx="12" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5"/>
+    <text x="688" y="746" font-size="21" font-weight="700" fill="#0f172a" text-anchor="start">9. Entrega al DEV/OPS</text>
+    <text x="688" y="776" font-size="19" font-weight="400" fill="#334155" text-anchor="start">Materiales finales</text>
+    <text x="688" y="800" font-size="19" font-weight="400" fill="#334155" text-anchor="start">e invitación por nombre</text>
+    <text x="688" y="833" font-size="17" font-weight="700" fill="#9a3412" text-anchor="start">Revisión del PO</text>
+    <path d="M500 884 L500 924" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="120" y="934" width="760" height="78" rx="18" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
+    <text x="500" y="965" font-size="23" font-weight="700" fill="#065f46" text-anchor="middle">Definición lista para entregar</text>
+    <text x="500" y="992" font-size="19" font-weight="400" fill="#065f46" text-anchor="middle">El DEV/OPS recibe el producto y la invitación del PO.</text>
+    <text x="500" y="1049" font-size="18" font-weight="400" fill="#475569" text-anchor="middle">Naranja: revisión humana  ·  Verde: resultado del recorrido</text>
+  </g>
+</svg>

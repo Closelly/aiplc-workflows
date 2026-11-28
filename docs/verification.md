@@ -76,3 +76,9 @@ nombre del PO, sin Bun/Node en PATH ni generación de claves.
 
 Se renderizaron los dos gráficos Mermaid y se comprobó el acceso web de Codex en
 escritorio y móvil, la solicitud codificada y la alternativa de copia.
+
+### Corrección visual del README
+
+Los diagramas del README se sustituyeron por SVG con posiciones y saltos de línea
+definidos. Se revisaron las imágenes en escritorio y móvil y se comprobaron las
+cajas de sus 69 textos: sin superposiciones ni desbordamientos horizontales.

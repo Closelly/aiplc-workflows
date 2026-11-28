@@ -125,28 +125,7 @@ Abre el nuevo producto en Codex e invoca `$closelly-aiplc-po`. Si prefieres otro
 El PO revisa los resultados y confirma las aprobaciones en una terminal interactiva.
 Al preparar la entrega, indica el nombre de quien continuará como DEV/OPS.
 
-```mermaid
-flowchart TB
-  subgraph descubrir["Entender y definir"]
-    direction LR
-    discovery["1. Discovery<br/>Problema y evidencia"] --> definition["2. Definición<br/>Propuesta y alcance<br/>Aprobación: negocio"] --> ai["3. AI-native<br/>Oportunidades y control humano"]
-  end
-  subgraph disenar["Diseñar la experiencia"]
-    direction LR
-    brand["4. Marca y creatividad<br/>Identidad y dirección visual<br/>Aprobación: creatividad"] --> ux["5. UX/UI<br/>Flujos y prototipo<br/>Aprobación: experiencia"] --> specs["6. Especificaciones<br/>Requisitos y criterios"]
-  end
-  subgraph entregar["Validar y entregar"]
-    direction LR
-    validation["7. Validación y pruebas<br/>Cobertura y resultados"] --> gtm["8. Marketing, ventas y growth<br/>Estrategia y plan de acción<br/>Aprobación: comercial"] --> handoff["9. Handoff<br/>Materiales e invitación al DEV/OPS<br/>Aprobación: entrega"]
-  end
-  descubrir --> disenar --> entregar --> sealed(["Definición sellada<br/>Lista para DEV/OPS"])
-  classDef normal fill:#eff6ff,stroke:#2563eb,color:#0f172a
-  classDef approval fill:#fff7ed,stroke:#c2410c,color:#431407
-  classDef result fill:#ecfdf5,stroke:#047857,color:#064e3b
-  class discovery,ai,specs,validation normal
-  class definition,brand,ux,gtm,handoff approval
-  class sealed result
-```
+![Etapas del PO: entender, diseñar, validar y entregar con una invitación al DEV/OPS.](docs/images/po-workflow.svg)
 
 Las etapas en naranja requieren una aprobación humana del PO. La entrega sellada
 marca el paso del trabajo de definición al recorrido del DEV/OPS.
@@ -186,25 +165,7 @@ conserva su estrategia, materiales y plan de acción en su handoff comercial.
 
 ## DEV/OPS · Recepción y preparación
 
-```mermaid
-flowchart TB
-  received(["Recibe la invitación y el producto del PO"])
-  subgraph comprender["Comprender y contrastar"]
-    direction LR
-    onboarding["1. Onboarding<br/>Se identifica con su nombre<br/>Recorre producto y negocio"] --> technical["2. Discovery técnico<br/>Viabilidad, restricciones y riesgos"] --> architecture["3. Arquitectura<br/>Datos, servicios y entornos"]
-  end
-  subgraph preparar["Preparar ejecución"]
-    direction LR
-    engineering["4. Diseño técnico de IA<br/>Evaluación, costos y operación"] --> planning["5. Planificación técnica<br/>Cortes, dependencias y pruebas"] --> readiness["6. Readiness técnico<br/>Revisión de la preparación<br/>Aprobación: readiness"]
-  end
-  received --> comprender --> preparar --> ready(["READY<br/>Continúa con construcción, pruebas y operación"])
-  classDef normal fill:#eff6ff,stroke:#2563eb,color:#0f172a
-  classDef approval fill:#fff7ed,stroke:#c2410c,color:#431407
-  classDef result fill:#ecfdf5,stroke:#047857,color:#064e3b
-  class technical,architecture,engineering,planning normal
-  class onboarding,readiness approval
-  class received,ready result
-```
+![Etapas del DEV/OPS: identificarse, comprender el producto y preparar la construcción y operación.](docs/images/dev-workflow.svg)
 
 El DEV/OPS revisa y aprueba su comprensión inicial y la preparación final.
 Después de READY, la implementación y la operación siguen el proceso habitual del equipo.
