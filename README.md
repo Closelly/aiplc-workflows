@@ -3,10 +3,24 @@
 [![CI](https://github.com/Closelly/aiplc-workflows/actions/workflows/ci.yml/badge.svg)](https://github.com/Closelly/aiplc-workflows/actions/workflows/ci.yml)
 [Licencia MIT](LICENSE) · [Inicio rápido](docs/getting-started.md) · [Contribuir](CONTRIBUTING.md)
 
-Closelly AI-PLC lleva un producto nuevo desde su idea hasta la entrega comercial y la
-preparación técnica. La CLI `closelly-aiplc` controla el orden, la trazabilidad, las
-aprobaciones y el sello Git. ChatGPT/Codex investiga, redacta y guía a cada responsable
-usando los encargos del motor y las Agent Skills.
+Closelly AI-PLC es un proyecto independiente inspirado en
+[AWS AI-DLC Workflows](https://github.com/awslabs/aidlc-workflows). Su propósito es
+**simplificar el proceso de llevar una idea a un producto definido y preparado
+para su construcción y operación**, mediante la colaboración entre dos actores humanos:
+
+- **PO — Product Owner:** entiende al cliente y el problema, define el producto y
+  su propuesta de valor, toma las decisiones de negocio y revisa las entregas.
+- **DEV/OPS — Desarrollo y Operaciones:** recibe la definición del producto,
+  contrasta su viabilidad técnica y prepara la arquitectura y el plan para
+  construirlo y operarlo.
+
+La IA acompaña a ambos: investiga, propone, redacta y organiza la evidencia.
+Las decisiones y aprobaciones corresponden a las personas responsables. El PO
+entrega una definición trazable y el DEV/OPS continúa desde ese contexto compartido.
+
+La CLI `closelly-aiplc` conserva el estado, comprueba los entregables y controla
+las transiciones y el sello Git. ChatGPT/Codex guía el trabajo por conversación.
+En los comandos de la herramienta, el rol DEV/OPS se identifica como `dev`.
 
 ## Empieza aquí
 
@@ -127,7 +141,7 @@ Git para el producto antes de cerrar y deja libre su área de preparación. Comp
 repositorio con el DEV por el canal de Git que el equipo use y conserva el tag. El PO
 tiene su estrategia, materiales y plan de acción en su handoff comercial.
 
-## DEV · Recepción y preparación
+## DEV/OPS · Recepción y preparación
 
 Abre el repositorio recibido y verifica que incluya el tag. En Codex invoca
 `$closelly-aiplc-dev` o usa `dev resume`. El DEV configura `AIPLC_DEV_KEY` con su
@@ -174,5 +188,4 @@ la [política de seguridad](SECURITY.md) y el [historial de cambios](CHANGELOG.m
 El código propio se distribuye bajo [MIT](LICENSE); las dependencias conservan
 sus licencias en [los avisos de terceros](THIRD_PARTY_NOTICES.md).
 
-Inspirado en [AWS AI-DLC Workflows](https://github.com/awslabs/aidlc-workflows).
 Proyecto independiente, sin afiliación ni respaldo de AWS u OpenAI.
