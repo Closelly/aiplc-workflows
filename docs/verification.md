@@ -48,3 +48,14 @@ La ampliación del instalador se verificó en macOS ARM64 con Bun 1.4.5:
 El ensayo local no acredita descarga pública ni ejecución en otros sistemas. Los
 workflows de GitHub ejecutan las comprobaciones en macOS ARM64/x64 y Linux ARM64/x64
 al subir el código y antes de preparar cada release. Los resultados observados quedan en Actions.
+
+## Automatización de borradores 0.1.1
+
+La preparación de releases ahora se inicia con cambios en `main`. Se añadieron
+pruebas de comparación numérica de versiones, releases existentes, reintentos de
+un borrador del mismo commit, resolución de tags anotados, notas del changelog y
+fallos de permisos o servicio de GitHub. La publicación final permanece manual.
+
+El workflow comprueba las cuatro plataformas y solo entonces crea el tag y el
+borrador con los archivos. Las releases públicas y los tags de otro commit no se
+sobrescriben. Consulta docs/releasing.md para el recorrido y los reintentos.

@@ -10,7 +10,7 @@ usando los encargos del motor y las Agent Skills.
 
 ## Empieza aquí
 
-**Estado: versión inicial 0.1.0.** Consulta los paquetes y notas en
+**Estado: versión 0.1.1.** Consulta los paquetes y notas en
 [Releases](https://github.com/Closelly/aiplc-workflows/releases).
 
 En macOS, Linux o WSL, ejecuta en una terminal:
@@ -36,6 +36,10 @@ closelly-aiplc doctor --core
 | Contribuir o compilar desde el código | [Contribuir](CONTRIBUTING.md) |
 | Preparar una release pública | [Publicación](docs/releasing.md) |
 | Entender estados, firmas y recuperación | [Arquitectura](docs/architecture.md) |
+
+Al integrar en `main` una versión nueva en `package.json`, GitHub ejecuta las
+pruebas, construye los paquetes y crea el borrador de la release. La publicación
+final se realiza manualmente desde Releases.
 
 ## Cómo se usa desde el chat
 

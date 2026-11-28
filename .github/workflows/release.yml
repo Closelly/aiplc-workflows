@@ -2,21 +2,46 @@ name: Release
 
 on:
   push:
-    tags: ['v*']
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: release-${{ github.ref }}
+  group: release-main
   cancel-in-progress: false
 
 jobs:
+  plan:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      should_release: ${{ steps.plan.outputs.should_release }}
+      version: ${{ steps.plan.outputs.version }}
+      tag: ${{ steps.plan.outputs.tag }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version: 1.4.5
+      - name: Detect new version
+        id: plan
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bun scripts/release-plan.ts plan
+
   verify:
+    needs: plan
+    if: needs.plan.outputs.should_release == 'true'
     uses: ./.github/workflows/ci.yml
 
   package:
-    needs: verify
+    needs: [plan, verify]
+    if: needs.plan.outputs.should_release == 'true'
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 20
     strategy:
@@ -30,10 +55,10 @@ jobs:
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
         with:
           bun-version: 1.4.5
-      - name: Check tag matches package version
+      - name: Check package version
         env:
-          RELEASE_TAG: ${{ github.ref_name }}
-        run: test "$RELEASE_TAG" = "v$(bun -p 'require("./package.json").version')"
+          RELEASE_VERSION: ${{ needs.plan.outputs.version }}
+        run: test "$RELEASE_VERSION" = "$(bun -p 'require("./package.json").version')"
       - run: bun install --frozen-lockfile
       - run: bun run build
       - run: bun run release:package
@@ -42,35 +67,56 @@ jobs:
           name: release-${{ matrix.runner }}
           path: release/*
           if-no-files-found: error
+          compression-level: 0
           retention-days: 7
 
   draft:
-    needs: package
+    needs: [plan, package]
+    if: needs.plan.outputs.should_release == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version: 1.4.5
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           pattern: release-*
           path: release
           merge-multiple: true
-      - name: Build complete checksums
+      - name: Verify complete package set and build checksums
+        env:
+          RELEASE_VERSION: ${{ needs.plan.outputs.version }}
         run: |
+          test "$(cat release/VERSION)" = "$RELEASE_VERSION"
           test "$(find release -maxdepth 1 -name '*.tar.gz' | wc -l)" -eq 4
+          for platform in darwin-arm64 darwin-x64 linux-arm64 linux-x64; do
+            test -f "release/closelly-aiplc-v$RELEASE_VERSION-$platform.tar.gz"
+          done
           cd release
           sha256sum *.tar.gz install.sh uninstall.sh VERSION > checksums.txt
-      - name: Create draft release
+      - name: Prepare tag and changelog notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          bun scripts/release-plan.ts ensure-tag
+          bun scripts/release-plan.ts notes > release-notes.md
+      - name: Create or finish draft release
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-          RELEASE_TAG: ${{ github.ref_name }}
+          RELEASE_TAG: ${{ needs.plan.outputs.tag }}
         run: |
           if gh release view "$RELEASE_TAG" --json isDraft --jq .isDraft > existing-draft 2>/dev/null; then
             test "$(cat existing-draft)" = true || { echo 'A published release is immutable.' >&2; exit 1; }
+            gh release edit "$RELEASE_TAG" --notes-file release-notes.md
           else
-            gh release create "$RELEASE_TAG" --draft --verify-tag --title "Closelly AI-PLC $RELEASE_TAG" --generate-notes
+            gh release create "$RELEASE_TAG" --draft --verify-tag --title "Closelly AI-PLC $RELEASE_TAG" --notes-file release-notes.md
           fi
           gh release upload "$RELEASE_TAG" release/* --clobber
-
+          echo "Borrador $RELEASE_TAG preparado. Publica la versión manualmente desde Releases." >> "$GITHUB_STEP_SUMMARY"

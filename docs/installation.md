@@ -44,13 +44,13 @@ El instalador no crea productos, claves ni aprobaciones.
 ## Revisar el script o elegir una versión
 
 ```sh
-curl -fsSL https://github.com/Closelly/aiplc-workflows/releases/download/v0.1.0/install.sh -o install.sh
+curl -fsSL https://github.com/Closelly/aiplc-workflows/releases/download/v0.1.1/install.sh -o install.sh
 less install.sh
 sh install.sh
 ```
 
 El script adjunto a cada release fija su versión y el repositorio automáticamente.
-El script del código fuente acepta `--repo Closelly/aiplc-workflows --version 0.1.0`.
+El script del código fuente acepta `--repo Closelly/aiplc-workflows --version 0.1.1`.
 
 ## Opciones
 

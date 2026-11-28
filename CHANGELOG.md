@@ -7,6 +7,24 @@ pueden existir cambios incompatibles, que se señalarán expresamente.
 
 Sin cambios pendientes.
 
+## 0.1.1 — 2026-11-27
+
+### Cambiado
+
+- Al integrar en `main` una versión nueva de `package.json`, GitHub ejecuta las
+  pruebas y prepara automáticamente el tag y la release en borrador con sus cuatro
+  paquetes nativos, instalador, desinstalador, VERSION y checksums.
+- Las notas del borrador se extraen de la sección correspondiente de este changelog.
+- La publicación final sigue siendo manual desde Releases; el instalador de
+  `latest` conserva la versión pública anterior hasta que se publique el borrador.
+
+### Protección de versiones
+
+- Los cambios que mantienen una versión ya publicada o un borrador de otro commit
+  no regeneran sus paquetes. Un borrador fallido se puede reintentar en su mismo commit.
+- Se rechazan versiones anteriores y tags ligados a otro commit; los tags publicados
+  no se mueven ni se sobrescriben releases públicas.
+
 ## 0.1.0 — 2026-11-27
 
 ### Añadido
