@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Abre Codex con una solicitud preparada para instalar Closelly AI-PLC.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; base-uri 'none'; form-action 'none'">
+  <title>Instalar con Codex · Closelly AI-PLC</title>
+  <link rel="stylesheet" href="install.css">
+  <script src="install.js" defer></script>
+</head>
+<body>
+  <main>
+    <a class="brand" href="https://github.com/Closelly/aiplc-workflows">Closelly <span>AI-PLC</span></a>
+    <p class="eyebrow">De la idea al producto, juntos.</p>
+    <h1>Instálalo con Codex.</h1>
+    <p class="intro">Abre un chat con la solicitud preparada. Revísala y envíala para que Codex instale la herramienta y compruebe que funciona.</p>
+    <div class="actions">
+      <a id="open-codex" class="button primary" href="#request">Abrir Codex</a>
+      <button id="copy-request" class="button secondary" type="button">Copiar solicitud</button>
+    </div>
+    <p id="status" class="status" role="status" aria-live="polite">Necesitas la aplicación de escritorio instalada. Si ya tienes un chat abierto, copia la solicitud y pégala allí.</p>
+    <section aria-labelledby="request-title">
+      <h2 id="request-title">La solicitud que vas a enviar</h2>
+      <label class="sr-only" for="request">Solicitud de instalación de Closelly AI-PLC</label>
+      <textarea id="request" readonly rows="11" spellcheck="false">Instala Closelly AI-PLC en este equipo usando la última release estable de https://github.com/Closelly/aiplc-workflows. Lee primero el README y docs/installation.md del repositorio. Descarga y revisa el instalador oficial https://github.com/Closelly/aiplc-workflows/releases/latest/download/install.sh y úsalo para instalar la CLI y sus skills locales con las opciones documentadas. Si ya está instalada, comprueba su versión antes de cambiarla. Verifica el resultado con closelly-aiplc version y closelly-aiplc doctor --core, informa cualquier bloqueo real y explícame cómo empezar a usarla en este mismo chat. Limita este paso a la instalación: no crees un producto ni claves de rol.</textarea>
+    </section>
+    <p class="note">El enlace prepara el mensaje; tú decides cuándo enviarlo. La instalación se realiza en tu equipo desde Codex.</p>
+    <footer><a href="https://github.com/Closelly/aiplc-workflows#empieza-aqu%C3%AD">Volver a la guía de instalación</a></footer>
+    <noscript><p>Copia la solicitud de arriba y pégala en Codex. También puedes seguir la instalación por terminal desde la guía.</p></noscript>
+  </main>
+</body>
+</html>

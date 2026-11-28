@@ -5,7 +5,11 @@ pueden existir cambios incompatibles, que se señalarán expresamente.
 
 ## Unreleased
 
-Sin cambios pendientes.
+### Añadido
+
+- Gráficos de las etapas PO y DEV/OPS en el README, con sus aprobaciones y entregas.
+- Acceso desde el README para abrir Codex con la solicitud de instalación preparada,
+  con alternativa para copiarla al chat actual.
 
 ## 0.1.1 — 2026-11-27
 

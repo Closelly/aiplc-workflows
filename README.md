@@ -27,7 +27,13 @@ En los comandos de la herramienta, el rol DEV/OPS se identifica como `dev`.
 **Estado: versión 0.1.1.** Consulta los paquetes y notas en
 [Releases](https://github.com/Closelly/aiplc-workflows/releases).
 
-En macOS, Linux o WSL, ejecuta en una terminal:
+**[Abrir Codex para instalar Closelly AI-PLC](https://closelly.github.io/aiplc-workflows/?open=1)**
+
+El enlace abre una solicitud de instalación preparada en la aplicación de escritorio.
+Revísala y envíala en Codex para comenzar. Si el navegador no abre la aplicación,
+la página también permite copiar la solicitud y pegarla en el chat que ya tienes abierto.
+
+También puedes instalar directamente en una terminal de macOS, Linux o WSL:
 
 ```sh
 curl -fsSL https://github.com/Closelly/aiplc-workflows/releases/latest/download/install.sh | sh
@@ -108,6 +114,32 @@ Abre el nuevo producto en Codex e invoca `$closelly-aiplc-po`. Si prefieres otro
 Los operadores controlan las transiciones con su clave. Las aprobaciones se firman
 en una terminal interactiva.
 
+```mermaid
+flowchart TB
+  subgraph descubrir["Entender y definir"]
+    direction LR
+    discovery["1. Discovery<br/>Problema y evidencia"] --> definition["2. Definición<br/>Propuesta y alcance<br/>Aprobación: negocio"] --> ai["3. AI-native<br/>Oportunidades y control humano"]
+  end
+  subgraph disenar["Diseñar la experiencia"]
+    direction LR
+    brand["4. Marca y creatividad<br/>Identidad y dirección visual<br/>Aprobación: creatividad"] --> ux["5. UX/UI<br/>Flujos y prototipo<br/>Aprobación: experiencia"] --> specs["6. Especificaciones<br/>Requisitos y criterios"]
+  end
+  subgraph entregar["Validar y entregar"]
+    direction LR
+    validation["7. Validación y pruebas<br/>Cobertura y resultados"] --> gtm["8. Marketing, ventas y growth<br/>Estrategia y plan de acción<br/>Aprobación: comercial"] --> handoff["9. Handoff<br/>Materiales, prototipo y película<br/>Aprobación: entrega"]
+  end
+  descubrir --> disenar --> entregar --> sealed(["Definición sellada<br/>Lista para DEV/OPS"])
+  classDef normal fill:#eff6ff,stroke:#2563eb,color:#0f172a
+  classDef approval fill:#fff7ed,stroke:#c2410c,color:#431407
+  classDef result fill:#ecfdf5,stroke:#047857,color:#064e3b
+  class discovery,ai,specs,validation normal
+  class definition,brand,ux,gtm,handoff approval
+  class sealed result
+```
+
+Las etapas en naranja requieren una aprobación humana del PO. La entrega sellada
+marca el paso del trabajo de definición al recorrido del DEV/OPS.
+
 | Fase | Resultado | Gate PO |
 | --- | --- | --- |
 | Discovery | Problema, evidencia, hipótesis y decisiones | |
@@ -142,6 +174,29 @@ repositorio con el DEV por el canal de Git que el equipo use y conserva el tag. 
 tiene su estrategia, materiales y plan de acción en su handoff comercial.
 
 ## DEV/OPS · Recepción y preparación
+
+```mermaid
+flowchart TB
+  received(["Recibe la definición sellada del PO"])
+  subgraph comprender["Comprender y contrastar"]
+    direction LR
+    onboarding["1. Onboarding<br/>Recorrido por producto y negocio<br/>Aprobación: comprensión"] --> technical["2. Discovery técnico<br/>Viabilidad, restricciones y riesgos"] --> architecture["3. Arquitectura<br/>Datos, servicios y entornos"]
+  end
+  subgraph preparar["Preparar ejecución"]
+    direction LR
+    engineering["4. Diseño técnico de IA<br/>Evaluación, costos y operación"] --> planning["5. Planificación técnica<br/>Cortes, dependencias y pruebas"] --> readiness["6. Readiness técnico<br/>Revisión de la preparación<br/>Aprobación: readiness"]
+  end
+  received --> comprender --> preparar --> ready(["READY<br/>Continúa con construcción, pruebas y operación"])
+  classDef normal fill:#eff6ff,stroke:#2563eb,color:#0f172a
+  classDef approval fill:#fff7ed,stroke:#c2410c,color:#431407
+  classDef result fill:#ecfdf5,stroke:#047857,color:#064e3b
+  class technical,architecture,engineering,planning normal
+  class onboarding,readiness approval
+  class received,ready result
+```
+
+El DEV/OPS revisa y aprueba su comprensión inicial y la preparación final.
+Después de READY, la implementación y la operación siguen el proceso habitual del equipo.
 
 Abre el repositorio recibido y verifica que incluya el tag. En Codex invoca
 `$closelly-aiplc-dev` o usa `dev resume`. El DEV configura `AIPLC_DEV_KEY` con su

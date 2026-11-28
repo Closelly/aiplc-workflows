@@ -12,6 +12,18 @@ OpenSSH. Comprueba las herramientas del sistema y explica qué falta. La distrib
 nativa incluye Bun: el usuario no necesita instalar Bun ni Node para el flujo básico.
 No instala un cliente de Codex ni configura cuentas de IA.
 
+## Instalar con ayuda de Codex
+
+[Abre Codex con la solicitud de instalación preparada](https://closelly.github.io/aiplc-workflows/?open=1).
+Revisa el mensaje y envíalo para comenzar. Si ya tienes un chat abierto, la página
+permite copiar la solicitud y pegarla allí. Este paso instala y comprueba la CLI y
+sus skills; la preparación de un producto y sus identidades viene después.
+
+La aplicación debe estar instalada en tu equipo. Algunos navegadores requieren
+confirmar la apertura o pulsar de nuevo el botón de la página. El mensaje se prepara
+mediante el [enlace oficial de nuevo chat](https://learn.chatgpt.com/docs/reference/commands#deep-links)
+y se envía cuando tú lo decidas.
+
 ## Instalación normal
 
 El siguiente comando instala la última release estable publicada en
