@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { activePhase } from "./engine";
 import { Blocked, digest, entry, files, inventory, readText, requireThat } from "./files";
 import { questionDigest, verifyReceipt } from "./identity";
+import { invitation } from "./participants";
 import type { Briefing, FilmPlan, Flows, Phase, Requirements, Role, State, TestCases, TestResults, Tokens } from "./model";
 import { artifactManifest, baseline, handoff, onboarding, Repository, stateFiles, taggedManifest } from "./repository";
 import { inspectFilm, videoInputs } from "./video";
@@ -46,7 +47,7 @@ function proof(repo: Repository, state: State, phase: Phase, current: string): v
   if (!phase.gate) return;
   const approval = state.approvals.find(item => item.phase === phase.id && item.gate === phase.gate);
   requireThat(approval, `Falta la aprobación humana ${phase.gate}.`);
-  verifyReceipt(repo.config, approval.receipt, state.role, "gate:" + phase.gate, current);
+  verifyReceipt(repo.config, approval.receipt, state.role, "gate:" + phase.gate, current, repo.identity(state.role));
 }
 
 export function verifyCompleted(repo: Repository, state: State): void {
@@ -275,7 +276,7 @@ function checksOnboarding(repo: Repository, phase: Phase, state: State): void {
   const sealed = repo.verifyHandoff();
   requireThat(sealed.digest === state.baselineDigest, "El DEV inició con una línea base distinta.");
   for (const [index, item] of phase.checklist!.entries()) {
-    verifyReceipt(repo.config, state.checklist[index], "dev", "onboard:" + item.id, checklistDigest(repo, item, sealed.digest));
+    verifyReceipt(repo.config, state.checklist[index], "dev", "onboard:" + item.id, checklistDigest(repo, item, sealed.digest), repo.identity("dev"));
   }
   checkClarifications(repo, state);
 }
@@ -310,6 +311,7 @@ export async function validatePhase(repo: Repository, role: Role, state: State, 
     case "validation": validation(repo); break;
     case "gtm": commercial(repo); break;
     case "handoff": {
+      if (repo.config.version === 2) invitation(repo);
       inspectBriefing(repo);
       inspectPlan(repo, phase);
       inspectFilm(repo, phase);

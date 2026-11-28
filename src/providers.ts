@@ -153,7 +153,6 @@ export async function doctor(cwd: string, language: string, tts: TtsConfig | und
   const checks: Check[] = [
     { name: "Bun", ok: !!Bun.version, detail: Bun.version, required: true },
     checkProgram("git"),
-    { name: "OpenSSH", ok: !!pathFor("ssh-keygen") && !!pathFor("ssh"), detail: "ssh-keygen -Y (firmas SSH Ed25519; usa OpenSSH 8.2+).", required: true },
     checkProgram("codex", false),
     { name: "Capacidades del harness", ok: true, detail: "Comprueba navegación web, capturas, diseño e interacción en el chat. La CLI no puede inspeccionar tus herramientas del chat.", required: false },
   ];

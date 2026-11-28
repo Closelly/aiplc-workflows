@@ -11,20 +11,22 @@ export const confirmForTests: Confirm = async () => {};
 export const evidence = "Fixture de integración: alcance, fuentes y evidencia controlada.";
 export const approved = "Confirmación emitida con las claves temporales de las pruebas.";
 
-export function project() {
+export function project(person?: { name: string; email?: string }) {
   const temp = temporary("test");
   const keyPo = join(temp, "po");
   const keyDev = join(temp, "dev");
-  for (const path of [keyPo, keyDev]) checked("ssh-keygen", ["-q", "-t", "ed25519", "-N", "", "-f", path]);
-  const root = init({ target: join(temp, "demo"), poPublicKey: keyPo + ".pub", devPublicKey: keyDev + ".pub",
-    poId: "po-fixture", devId: "dev-fixture", name: "Taller de pedidos", language: "es-CL" });
+  for (const path of person ? [] : [keyPo, keyDev]) checked("ssh-keygen", ["-q", "-t", "ed25519", "-N", "", "-f", path]);
+  const root = init(person ? { target: join(temp, "demo"), poName: person.name, poEmail: person.email,
+    name: "Taller de pedidos", language: "es-CL" } :
+    { target: join(temp, "demo"), poPublicKey: keyPo + ".pub", devPublicKey: keyDev + ".pub",
+      poId: "po-fixture", devId: "dev-fixture", name: "Taller de pedidos", language: "es-CL" });
   const repo = new Repository(root);
   repo.git(["config", "user.name", "Closelly AI-PLC Test"]);
   repo.git(["config", "user.email", "aiplc@example.invalid"]);
   return {
     temp, root, keyPo, keyDev,
-    po: () => new Lifecycle(new Repository(root), keyPo),
-    dev: () => new Lifecycle(new Repository(root), keyDev),
+    po: () => new Lifecycle(new Repository(root), person ? undefined : keyPo),
+    dev: () => new Lifecycle(new Repository(root), person ? undefined : keyDev),
     cleanup: () => rmSync(temp, { recursive: true, force: true }),
     rootEntries: () => readdirSync(root).sort(),
   };

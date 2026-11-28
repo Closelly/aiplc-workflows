@@ -24,7 +24,7 @@ En los comandos de la herramienta, el rol DEV/OPS se identifica como `dev`.
 
 ## Empieza aquí
 
-**Estado: versión 0.1.1.** Consulta los paquetes y notas en
+**Estado: versión 0.2.0.** Consulta los paquetes y notas en
 [Releases](https://github.com/Closelly/aiplc-workflows/releases).
 
 **[Abrir Codex para instalar Closelly AI-PLC](https://closelly.github.io/aiplc-workflows/?open=1)**
@@ -42,7 +42,7 @@ curl -fsSL https://github.com/Closelly/aiplc-workflows/releases/latest/download/
 El instalador detecta tu equipo, descarga el ejecutable nativo, verifica su SHA-256,
 instala la metodología y las skills de Codex, configura el PATH y ejecuta el
 comprobador básico. **No necesitas clonar el código ni instalar Bun o Node.js para
-empezar.** Se requieren Git y OpenSSH; si faltan, el instalador explica el bloqueo.
+empezar.** Se requiere Git; si falta, el instalador explica cómo continuar.
 No usa sudo. Abre una terminal nueva al terminar y comprueba:
 
 ```sh
@@ -55,11 +55,26 @@ closelly-aiplc doctor --core
 | Elegir versión, actualizar o desinstalar | [Instalación](docs/installation.md) |
 | Contribuir o compilar desde el código | [Contribuir](CONTRIBUTING.md) |
 | Preparar una release pública | [Publicación](docs/releasing.md) |
-| Entender estados, firmas y recuperación | [Arquitectura](docs/architecture.md) |
+| Entender estados, participantes y recuperación | [Arquitectura](docs/architecture.md) |
 
 Al integrar en `main` una versión nueva en `package.json`, GitHub ejecuta las
 pruebas, construye los paquetes y crea el borrador de la release. La publicación
 final se realiza manualmente desde Releases.
+
+## El recorrido de las personas
+
+1. **El PO se presenta:** “Me llamo Luis y quiero trabajar esta idea”. Con su nombre
+   basta para empezar. Codex le ayuda a entender el problema y definir el producto.
+2. **El PO decide a quién entregar:** al terminar, indica “Ana será quien continúe
+   el desarrollo”. La herramienta prepara una invitación para Ana junto con la entrega.
+3. **El DEV/OPS se presenta:** Ana abre el producto recibido y dice “Me llamo Ana”.
+   La herramienta comprueba que su nombre coincide con el que indicó el PO.
+4. **El DEV/OPS continúa:** recorre el negocio y el producto, resuelve dudas y prepara
+   la construcción y la operación con ayuda de Codex.
+
+Las revisiones importantes se confirman por la persona responsable y quedan
+registradas con su nombre, fecha y documentos revisados. No necesitas elegir al
+DEV/OPS para empezar Discovery.
 
 ## Cómo se usa desde el chat
 
@@ -67,7 +82,7 @@ final se realiza manualmente desde Releases.
 2. Abre en Codex la carpeta donde quieres trabajar y pide: **“Usa
    `$closelly-aiplc-po` para crear mi producto. Guíame paso a paso y detente antes de
    cualquier aprobación.”** El asistente acuerda el nombre, una carpeta nueva y
-   las identidades necesarias antes de crear el producto.
+   tu nombre antes de crear el producto. El destinatario DEV/OPS se elige al final.
 3. Conversa sobre tu cliente y el problema. El asistente investiga, hace preguntas
    y prepara documentos; la CLI conserva y verifica el estado real.
 4. Para retomar, abre la carpeta del producto y pide que continúe desde el estado
@@ -83,24 +98,20 @@ handoff requiere herramientas adicionales: [configuración multimedia](docs/vide
 
 ## Iniciar un producto
 
-El PO y el DEV generan o eligen **claves SSH Ed25519 distintas**. Solo se comparten las
-públicas `.pub`. Por ejemplo, cada persona puede crear la suya con
-`ssh-keygen -t ed25519 -f /ruta/segura/mi-clave-aiplc`. Guarda las claves fuera del
-repositorio. Usa `ssh-add` y la ruta pública si firmas con ssh-agent.
-
-El directorio destino debe ser nuevo y estar fuera de otro Git. Puedes usar los comandos
-siguientes con un binario instalado o sustituir `closelly-aiplc` por su ruta absoluta.
+Para empezar, el PO solo indica su nombre, el nombre del producto y una idea.
+En Codex puede pedirlo por conversación; estos son los comandos equivalentes:
 
 ```sh
 closelly-aiplc po init /ruta/producto-nuevo \
-  --po-key /ruta/po.pub --dev-key /ruta/dev.pub \
-  --po-id product-owner --dev-id developer \
-  --name "Producto Nuevo" --idea "Problema y cliente inicial"
+  --po-name "Luis" --name "Taller de pedidos" \
+  --idea "Organizar la recepción y seguimiento de encargos"
 cd /ruta/producto-nuevo
-export AIPLC_PO_KEY="/ruta/segura/mi-clave-o-publica-en-ssh-agent"
 closelly-aiplc po start
 closelly-aiplc po resume
 ```
+
+La carpeta destino debe ser nueva. Codex puede ayudarte a elegirla. El correo es
+opcional; no se piden claves ni datos del DEV/OPS al comenzar.
 
 `po init` ejecuta `git init`. En la raíz crea solo `AGENTS.md`, `docs/` y el directorio
 interno `.git/`. La definición y el estado PO quedan en `docs/aiplc/`. Las carpetas
@@ -111,8 +122,8 @@ El estado DEV aparece en `docs/technical/aiplc/state.json` al iniciar su onboard
 
 Abre el nuevo producto en Codex e invoca `$closelly-aiplc-po`. Si prefieres otro entorno,
 `config --harness portable` y `harness context po --json` exponen el mismo encargo.
-Los operadores controlan las transiciones con su clave. Las aprobaciones se firman
-en una terminal interactiva.
+El PO revisa los resultados y confirma las aprobaciones en una terminal interactiva.
+Al preparar la entrega, indica el nombre de quien continuará como DEV/OPS.
 
 ```mermaid
 flowchart TB
@@ -126,7 +137,7 @@ flowchart TB
   end
   subgraph entregar["Validar y entregar"]
     direction LR
-    validation["7. Validación y pruebas<br/>Cobertura y resultados"] --> gtm["8. Marketing, ventas y growth<br/>Estrategia y plan de acción<br/>Aprobación: comercial"] --> handoff["9. Handoff<br/>Materiales, prototipo y película<br/>Aprobación: entrega"]
+    validation["7. Validación y pruebas<br/>Cobertura y resultados"] --> gtm["8. Marketing, ventas y growth<br/>Estrategia y plan de acción<br/>Aprobación: comercial"] --> handoff["9. Handoff<br/>Materiales e invitación al DEV/OPS<br/>Aprobación: entrega"]
   end
   descubrir --> disenar --> entregar --> sealed(["Definición sellada<br/>Lista para DEV/OPS"])
   classDef normal fill:#eff6ff,stroke:#2563eb,color:#0f172a
@@ -140,7 +151,7 @@ flowchart TB
 Las etapas en naranja requieren una aprobación humana del PO. La entrega sellada
 marca el paso del trabajo de definición al recorrido del DEV/OPS.
 
-| Fase | Resultado | Gate PO |
+| Etapa | Qué preparamos | Revisión del PO |
 | --- | --- | --- |
 | Discovery | Problema, evidencia, hipótesis y decisiones | |
 | Definición | Propuesta, alcance, reglas y resultados | Negocio |
@@ -150,7 +161,7 @@ marca el paso del trabajo de definición al recorrido del DEV/OPS.
 | Especificaciones | Requisitos con criterios, datos e integraciones | |
 | Validación y pruebas | Cobertura, resultados de prototipo y casos pendientes de implementación | |
 | Marketing, ventas y growth | Tres fases, experimentos, presupuesto y tareas del PO | Comercial |
-| Handoff | Paquete comercial, presentación, prototipo y película para el DEV | Handoff |
+| Handoff | Paquete comercial, presentación, prototipo, película e invitación al DEV/OPS | Handoff |
 
 - `po status` muestra avance y faltantes. `po resume` entrega el encargo a Codex con instrucciones, schemas y salidas.
 - `po scaffold` crea borradores Markdown sin sobrescribir trabajo. `po validate` comprueba artefactos. `po advance` cierra la fase activa.
@@ -159,28 +170,28 @@ marca el paso del trabajo de definición al recorrido del DEV/OPS.
 
 Para preparar la entrega, completa `briefing.json`, `video-plan.json` y el handoff
 comercial dentro de `docs/aiplc/09-handoff/`. Sigue la [guía de video](docs/video.md).
-Revisa el paquete y deja evidencia en `validation-report.md` antes de firmar.
+Revisa el paquete y deja evidencia en `validation-report.md` antes de confirmar la entrega.
 
 ```sh
+closelly-aiplc po invite --dev-name "Ana"
 closelly-aiplc doctor --probe
 closelly-aiplc po handoff --prepare
 closelly-aiplc po approve --note "Revisé el prototipo, las presentaciones y el MP4."
 closelly-aiplc po handoff
 ```
 
-El cierre crea un commit y el tag `aiplc-baseline-v1`. Configura el nombre y correo de
-Git para el producto antes de cerrar y deja libre su área de preparación. Comparte el
-repositorio con el DEV por el canal de Git que el equipo use y conserva el tag. El PO
-tiene su estrategia, materiales y plan de acción en su handoff comercial.
+El cierre conserva la definición y la invitación en una entrega Git. Comparte el
+repositorio y `docs/aiplc/09-handoff/INVITACION-DEV.md` con la persona indicada. El PO
+conserva su estrategia, materiales y plan de acción en su handoff comercial.
 
 ## DEV/OPS · Recepción y preparación
 
 ```mermaid
 flowchart TB
-  received(["Recibe la definición sellada del PO"])
+  received(["Recibe la invitación y el producto del PO"])
   subgraph comprender["Comprender y contrastar"]
     direction LR
-    onboarding["1. Onboarding<br/>Recorrido por producto y negocio<br/>Aprobación: comprensión"] --> technical["2. Discovery técnico<br/>Viabilidad, restricciones y riesgos"] --> architecture["3. Arquitectura<br/>Datos, servicios y entornos"]
+    onboarding["1. Onboarding<br/>Se identifica con su nombre<br/>Recorre producto y negocio"] --> technical["2. Discovery técnico<br/>Viabilidad, restricciones y riesgos"] --> architecture["3. Arquitectura<br/>Datos, servicios y entornos"]
   end
   subgraph preparar["Preparar ejecución"]
     direction LR
@@ -198,14 +209,18 @@ flowchart TB
 El DEV/OPS revisa y aprueba su comprensión inicial y la preparación final.
 Después de READY, la implementación y la operación siguen el proceso habitual del equipo.
 
-Abre el repositorio recibido y verifica que incluya el tag. En Codex invoca
-`$closelly-aiplc-dev` o usa `dev resume`. El DEV configura `AIPLC_DEV_KEY` con su
-propia clave.
+El DEV/OPS abre el producto y la invitación en Codex. Solo debe decir su nombre.
+La herramienta comprueba que coincide con el destinatario indicado por el PO y
+le presenta el recorrido. El mensaje puede ser tan simple como:
+
+> Me llamo Ana. El PO me invitó a recibir este producto. Usa `$closelly-aiplc-dev`
+> y guíame paso a paso.
+
+Los comandos equivalentes son:
 
 ```sh
-closelly-aiplc dev onboard
+closelly-aiplc dev onboard --name "Ana"
 closelly-aiplc dev resume
-closelly-aiplc dev ack welcome --note "Revisé el objetivo y el recorrido."
 ```
 
 El recorrido presenta negocio, pitch, presentaciones, película, prototipo, estructura,
@@ -224,15 +239,14 @@ con su práctica habitual de implementación, pruebas y operación.
 
 `knowledge audit` comprueba el sello, el historial de actualizaciones y dudas pendientes.
 `knowledge update business|technical|operations RUTA --from ARCHIVO --reference RUTA_ORIGEN --note ...`
-registra un cambio y su responsable. Los cambios de negocio los firma el PO. Añade
+registra un cambio y su responsable. Los cambios de negocio los confirma el PO. Añade
 `--scope-change` al modificar el alcance. Architecture y Operations deben distinguir
 lo planeado de lo que se observa en producción.
 
-Las claves de rol se verifican localmente y las aprobaciones se ligan a los archivos.
-Quien controla el disco, el ejecutable y las claves controla la política local. Para
-una frontera organizacional usa custodia separada de claves, protección de ramas y
-tags, revisión del digest o tag por un canal confiable y permisos de repositorio
-administrados. Detalles en [arquitectura y recuperación](docs/architecture.md).
+Los nombres identifican a los participantes declarados. La invitación permite
+comprobar que el DEV/OPS es el destinatario indicado; las aprobaciones se vinculan a
+los documentos revisados. El acceso al repositorio se administra con las herramientas
+del equipo. Detalles en [arquitectura y recuperación](docs/architecture.md).
 
 Consulta [cómo se probó](docs/verification.md) y `closelly-aiplc help`.
 

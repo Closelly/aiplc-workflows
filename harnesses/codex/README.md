@@ -11,4 +11,4 @@ acceso a una terminal y a la carpeta de producto, genera propuestas en el chat y
 los documentos y comandos a Codex o a una terminal local.
 
 Ejecuta las aprobaciones en la terminal del operador. Para que Codex redacte, basta
-la lectura de los documentos. El responsable ejecuta transiciones con su clave de rol.
+la lectura de los documentos. El PO indica su nombre al crear el producto. Al final invita al DEV/OPS por su nombre; el DEV/OPS se identifica con ese mismo nombre al recibirlo. Las aprobaciones las confirma cada persona en su terminal. No pidas claves SSH para productos nuevos.

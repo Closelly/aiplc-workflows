@@ -1,87 +1,94 @@
-# Tu primer producto
+# De la idea al trabajo compartido
 
-Esta guía usa macOS, Linux o WSL y Codex con acceso a archivos y terminal. El PO es
-la persona responsable del producto; el DEV es quien recibe después la definición
-para preparar su implementación. No necesitas trabajar con ambos a la vez.
+Necesitas Codex con acceso a la carpeta de trabajo y a una terminal. La herramienta
+acompaña a dos personas: el PO define el producto y el DEV/OPS prepara cómo
+construirlo y operarlo.
 
-## 1. Instala una vez
+## 1. El PO se presenta y cuenta su idea
 
-Usa el comando de instalación del README. Abre una terminal nueva y ejecuta `closelly-aiplc doctor --core`.
-Si la skill no aparece en Codex, abre una sesión nueva o reinicia la aplicación.
+Después de [instalar la herramienta](installation.md), escribe en Codex:
 
-## 2. Pide ayuda en el chat
+> Usa $closelly-aiplc-po. Me llamo Luis y quiero trabajar una idea llamada Taller de
+> pedidos. Ayúdame a entender el problema y guíame paso a paso desde Discovery.
 
-Abre una carpeta de trabajo en Codex y escribe:
+Tu nombre basta para empezar. Puedes añadir un correo si quieres, pero es opcional.
+Todavía no necesitas saber quién hará el desarrollo.
 
-> Usa $closelly-aiplc-po para iniciar un producto nuevo llamado Taller de pedidos.
-> Quiero explorar el problema de recibir y seguir encargos. Ayúdame a preparar una
-> carpeta independiente y mis identidades. Guíame en Discovery y detente antes de
-> pedir o registrar cualquier aprobación.
-
-El asistente puede preparar los comandos y documentos. Una pregunta de Discovery
-sirve para conocer tu caso; no equivale a una aprobación del flujo.
-
-## 3. Prepara las identidades
-
-Cada responsable debe custodiar una clave SSH Ed25519 distinta. En una terminal,
-el PO puede crear la suya así, eligiendo una ruta que todavía no exista:
+Codex te ayuda a elegir una carpeta nueva y crea allí el producto. La carpeta de
+la herramienta y la del producto son distintas. Los comandos equivalentes son:
 
 ```sh
-mkdir -p "$HOME/.ssh"
-ssh-keygen -t ed25519 -f "$HOME/.ssh/closelly-aiplc-po"
-```
-
-Usa una contraseña para proteger una clave real. El DEV genera su propia clave y
-comparte únicamente el archivo `.pub`. Pide al asistente que adapte los comandos a
-las rutas reales. Nunca pegues ni subas una clave privada al chat o al repositorio.
-Si usas contraseña, carga tu clave en `ssh-agent` y utiliza la ruta pública al firmar.
-
-Para una demostración ficticia pueden prepararse dos claves temporales en una
-carpeta privada externa al producto, identificadas como claves de prueba. No las
-reutilices para un producto real ni atribuyas sus firmas a otra persona.
-
-## 4. Crea e inicia el producto
-
-La carpeta destino debe ser nueva y estar fuera de cualquier otro Git. Sustituye
-las rutas antes de ejecutar:
-
-```sh
-closelly-aiplc po init /ruta/producto-nuevo \
-  --po-key /ruta/po.pub --dev-key /ruta/dev.pub \
-  --name "Taller de pedidos" \
-  --idea "Explorar la recepción y seguimiento de encargos"
+closelly-aiplc po init /ruta/producto-nuevo --po-name "Luis" \
+  --name "Taller de pedidos" --idea "Organizar la recepción y seguimiento de encargos"
 cd /ruta/producto-nuevo
-export AIPLC_PO_KEY="/ruta/clave-po-o-publica-cargada-en-ssh-agent"
 closelly-aiplc po start
 closelly-aiplc po resume --json
 ```
 
-Abre ahora **la carpeta del producto** en Codex. Pide que lea el estado y continúe
-con `$closelly-aiplc-po`. La carpeta de la herramienta y la del producto son distintas.
+## 2. El PO trabaja con Codex
 
-## 5. Trabaja por conversación
+Cuenta ejemplos, responde preguntas y corrige las propuestas. Codex investiga,
+separa evidencia de hipótesis y prepara los documentos. Discovery empieza con
+`brief.md`, `research.json` y `decisions.md` en `docs/aiplc/01-discovery/`.
 
-En Discovery el asistente identifica el segmento, el problema, las alternativas y
-la evidencia. Te presenta preguntas y propuestas; tú describes ejemplos, corriges
-supuestos y revisas documentos. Los primeros resultados son `brief.md`,
-`research.json` y `decisions.md` dentro de `docs/aiplc/01-discovery/`.
+Después vienen definición, IA, marca, experiencia, especificaciones, validación,
+estrategia comercial y entrega. Las decisiones importantes las revisas tú. Cuando
+corresponda una aprobación, la herramienta te muestra qué se está revisando y te
+pide confirmar; el registro conserva tu nombre, la fecha y los documentos revisados.
 
-`po status` muestra el estado y archivos ausentes. Que no falten archivos no significa
-que estén completos: `po validate` también comprueba su contenido y los borradores
-siguen pendientes. `po resume` informa qué hacer; no llama por sí mismo a un modelo
-ni investiga automáticamente. La redacción la hace el asistente con las herramientas
-disponibles en tu chat. No se necesita una clave de la API de OpenAI para este adaptador.
+`po status` muestra el avance. `po resume` entrega al asistente el trabajo pendiente;
+la investigación y la redacción las realiza Codex con las herramientas del chat.
+`po validate` comprueba archivos y contenido: que un archivo exista no significa
+que esté completo.
 
-Más adelante hay etapas de definición, IA, marca, experiencia, especificaciones,
-validación, estrategia comercial y entrega. Los puntos de aprobación pertenecen a
-la persona responsable y requieren su terminal. El instalador no los ejecuta. DEV
-solo comienza después de que el PO cierre y selle su entrega.
+## 3. Al entregar, el PO indica quién continúa
 
-## Retomar y pedir ayuda
+Cuando el producto esté listo para la entrega, Codex te preguntará:
 
-Abre la misma carpeta y pide: “Continúa el flujo PO desde su estado real. Muéstrame
-qué está completo y qué falta”. Si aparece un bloqueo, comparte el mensaje y la
-versión, sin claves ni información privada.
+> ¿Quién recibirá el producto como DEV/OPS?
 
-Consulta [instalación](installation.md) para problemas con PATH o skills, y
-[video](video.md) antes de preparar la entrega multimedia.
+Por ejemplo: “Ana Muñoz”. La herramienta prepara la invitación con ese nombre:
+
+```sh
+closelly-aiplc po invite --dev-name "Ana Muñoz"
+```
+
+La invitación queda en `docs/aiplc/09-handoff/INVITACION-DEV.md`. Revisa el paquete
+comercial, el prototipo y la película, confirma la entrega y comparte el repositorio
+junto con la invitación por el canal que uses con esa persona. La herramienta no
+envía correos ni necesita crear una cuenta para el invitado.
+
+La película requiere preparar sus herramientas y voz según [video.md](video.md).
+El instalador básico permite empezar Discovery; no acredita un render multimedia.
+
+## 4. El DEV/OPS abre la invitación y se presenta
+
+Ana abre el producto recibido en Codex y escribe:
+
+> Me llamo Ana Muñoz. El PO me invitó a recibir este producto. Usa
+> $closelly-aiplc-dev y guíame paso a paso.
+
+La herramienta comprueba que el nombre coincide con el destinatario indicado por
+el PO. Tolera diferencias de mayúsculas, tildes y espacios. Si no coincide, pide
+revisarlo con el PO antes de continuar. El comando equivalente es:
+
+```sh
+closelly-aiplc dev onboard --name "Ana Muñoz"
+closelly-aiplc dev resume
+```
+
+El DEV/OPS recorre negocio, producto, materiales, película, prototipo y decisiones.
+Después prepara viabilidad, arquitectura, IA, planificación y readiness. A partir
+de READY, el equipo sigue su proceso habitual de construcción, pruebas y operación.
+
+## Retomar el trabajo
+
+Abre la misma carpeta y pide: “Continúa desde donde quedamos y muéstrame qué falta”.
+La identificación se conserva localmente en esa copia del producto. En una copia
+nueva, el PO puede volver a presentarse con `po identify --name "Luis"`; el DEV/OPS
+puede usar otra vez `dev onboard --name "Ana Muñoz"`.
+
+Los nombres son los que cada persona declara para este trabajo. El acceso al
+repositorio lo administra el equipo con sus herramientas habituales.
+
+Para productos creados con 0.1.x, consulta [la actualización a 0.2](upgrading.md).

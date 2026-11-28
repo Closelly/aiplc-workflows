@@ -7,8 +7,7 @@ WSL utiliza la distribución Linux correspondiente. Windows PowerShell nativo y
 Linux musl/Alpine todavía no están soportados. El CI comprobará cada plataforma
 antes de preparar sus paquetes; consulta los resultados de cada release.
 
-El instalador requiere una terminal POSIX, curl, tar, un verificador SHA-256, Git y
-OpenSSH. Comprueba las herramientas del sistema y explica qué falta. La distribución
+El instalador requiere una terminal POSIX, curl, tar, un verificador SHA-256 y Git. Comprueba las herramientas del sistema y explica qué falta. La distribución
 nativa incluye Bun: el usuario no necesita instalar Bun ni Node para el flujo básico.
 No instala un cliente de Codex ni configura cuentas de IA.
 
@@ -56,13 +55,13 @@ El instalador no crea productos, claves ni aprobaciones.
 ## Revisar el script o elegir una versión
 
 ```sh
-curl -fsSL https://github.com/Closelly/aiplc-workflows/releases/download/v0.1.1/install.sh -o install.sh
+curl -fsSL https://github.com/Closelly/aiplc-workflows/releases/download/v0.2.0/install.sh -o install.sh
 less install.sh
 sh install.sh
 ```
 
 El script adjunto a cada release fija su versión y el repositorio automáticamente.
-El script del código fuente acepta `--repo Closelly/aiplc-workflows --version 0.1.1`.
+El script del código fuente acepta `--repo Closelly/aiplc-workflows --version 0.2.0`.
 
 ## Opciones
 

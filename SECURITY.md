@@ -16,10 +16,17 @@ no ofrece un plazo de respuesta garantizado ni un programa de recompensas.
 
 ## Alcance y límites
 
-Las claves privadas PO/DEV deben permanecer fuera de Git. No son claves de OpenAI.
-Las firmas vinculan un rol y una revisión de documentos; quien controla disco,
-claves y ejecutable también controla la política local. Las protecciones de ramas,
-permisos y custodia separada de claves se administran fuera de la herramienta.
+Los productos nuevos identifican a los participantes por el nombre que declaran.
+El PO nombra al destinatario al preparar la entrega; DEV/OPS debe indicar ese
+mismo nombre para comenzar. Esto permite registrar responsabilidades y confirmar
+que el nombre coincide; no certifica la identidad de una persona ni sustituye
+permisos de acceso, cuentas verificadas o controles del repositorio del equipo.
+
+Las confirmaciones se vinculan a los documentos revisados y el sello Git verifica
+la integridad de la entrega. Los nombres y los correos opcionales se guardan en los
+documentos del producto. Comparte ese repositorio con las personas correspondientes.
+Los productos anteriores conservan sus claves privadas fuera de Git y su mecanismo
+original; consulta docs/upgrading.md.
 
 La instalación usa HTTPS y verifica SHA-256 de los paquetes contra `checksums.txt`
 de la misma release. Esto detecta descargas dañadas; no sustituye una firma de
@@ -27,5 +34,5 @@ editor ni protege frente a una cuenta de publicación comprometida. Puedes desca
 y revisar el instalador antes de ejecutarlo, o usar una versión fijada.
 
 El instalador no solicita sudo, credenciales del proveedor de IA ni claves privadas.
-Comprueba Git y OpenSSH, y falla si faltan. Los proveedores remotos de voz reciben
+Comprueba Git, y falla si faltan. Los proveedores remotos de voz reciben
 la narración solo cuando el operador los configura; consulta docs/video.md.

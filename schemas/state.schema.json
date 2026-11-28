@@ -97,64 +97,133 @@
             "pattern": "^[a-zA-Z0-9]+(?:[-_][a-zA-Z0-9]+)*$"
           },
           "receipt": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "projectId",
-              "role",
-              "actor",
-              "purpose",
-              "digest",
-              "note",
-              "at",
-              "signature"
-            ],
-            "properties": {
-              "projectId": {
-                "type": "string",
-                "minLength": 36,
-                "maxLength": 36
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "projectId",
+                  "role",
+                  "actor",
+                  "purpose",
+                  "digest",
+                  "note",
+                  "at",
+                  "signature"
+                ],
+                "properties": {
+                  "projectId": {
+                    "type": "string",
+                    "minLength": 36,
+                    "maxLength": 36
+                  },
+                  "role": {
+                    "enum": [
+                      "po",
+                      "dev"
+                    ]
+                  },
+                  "actor": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 80,
+                    "pattern": "^[a-zA-Z0-9_.@-]+$"
+                  },
+                  "purpose": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 180
+                  },
+                  "digest": {
+                    "type": "string",
+                    "minLength": 64,
+                    "maxLength": 64,
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 8,
+                    "maxLength": 4000
+                  },
+                  "at": {
+                    "type": "string",
+                    "minLength": 24,
+                    "maxLength": 24,
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+                  },
+                  "signature": {
+                    "type": "string",
+                    "minLength": 32,
+                    "maxLength": 4000
+                  }
+                }
               },
-              "role": {
-                "enum": [
-                  "po",
-                  "dev"
-                ]
-              },
-              "actor": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 80,
-                "pattern": "^[a-zA-Z0-9_.@-]+$"
-              },
-              "purpose": {
-                "type": "string",
-                "minLength": 2,
-                "maxLength": 180
-              },
-              "digest": {
-                "type": "string",
-                "minLength": 64,
-                "maxLength": 64,
-                "pattern": "^[a-f0-9]{64}$"
-              },
-              "note": {
-                "type": "string",
-                "minLength": 8,
-                "maxLength": 4000
-              },
-              "at": {
-                "type": "string",
-                "minLength": 24,
-                "maxLength": 24,
-                "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
-              },
-              "signature": {
-                "type": "string",
-                "minLength": 32,
-                "maxLength": 4000
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "projectId",
+                  "role",
+                  "actor",
+                  "purpose",
+                  "digest",
+                  "note",
+                  "at",
+                  "actorName",
+                  "confirmation"
+                ],
+                "properties": {
+                  "projectId": {
+                    "type": "string",
+                    "minLength": 36,
+                    "maxLength": 36
+                  },
+                  "role": {
+                    "enum": [
+                      "po",
+                      "dev"
+                    ]
+                  },
+                  "actor": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 80,
+                    "pattern": "^[a-zA-Z0-9_.@-]+$"
+                  },
+                  "purpose": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 180
+                  },
+                  "digest": {
+                    "type": "string",
+                    "minLength": 64,
+                    "maxLength": 64,
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 8,
+                    "maxLength": 4000
+                  },
+                  "at": {
+                    "type": "string",
+                    "minLength": 24,
+                    "maxLength": 24,
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+                  },
+                  "actorName": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 120,
+                    "pattern": "^[^<>\\r\\n]+$"
+                  },
+                  "confirmation": {
+                    "const": "name"
+                  }
+                }
               }
-            }
+            ]
           }
         }
       },
@@ -207,6 +276,12 @@
             "type": "string",
             "minLength": 8,
             "maxLength": 4000
+          },
+          "actorName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "pattern": "^[^<>\\r\\n]+$"
           }
         }
       },
@@ -215,100 +290,8 @@
     "checklist": {
       "type": "array",
       "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "projectId",
-          "role",
-          "actor",
-          "purpose",
-          "digest",
-          "note",
-          "at",
-          "signature"
-        ],
-        "properties": {
-          "projectId": {
-            "type": "string",
-            "minLength": 36,
-            "maxLength": 36
-          },
-          "role": {
-            "enum": [
-              "po",
-              "dev"
-            ]
-          },
-          "actor": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 80,
-            "pattern": "^[a-zA-Z0-9_.@-]+$"
-          },
-          "purpose": {
-            "type": "string",
-            "minLength": 2,
-            "maxLength": 180
-          },
-          "digest": {
-            "type": "string",
-            "minLength": 64,
-            "maxLength": 64,
-            "pattern": "^[a-f0-9]{64}$"
-          },
-          "note": {
-            "type": "string",
-            "minLength": 8,
-            "maxLength": 4000
-          },
-          "at": {
-            "type": "string",
-            "minLength": 24,
-            "maxLength": 24,
-            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
-          },
-          "signature": {
-            "type": "string",
-            "minLength": 32,
-            "maxLength": 4000
-          }
-        }
-      },
-      "minItems": 0
-    },
-    "clarifications": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "id",
-          "question",
-          "reference",
-          "blocking"
-        ],
-        "properties": {
-          "id": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 80,
-            "pattern": "^[a-zA-Z0-9]+(?:[-_][a-zA-Z0-9]+)*$"
-          },
-          "question": {
-            "type": "string",
-            "minLength": 8,
-            "maxLength": 4000
-          },
-          "reference": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 240,
-            "pattern": "^[A-Za-z0-9_./@ +()-]+$"
-          },
-          "blocking": {
-            "type": "boolean"
-          },
-          "answer": {
+        "oneOf": [
+          {
             "type": "object",
             "additionalProperties": false,
             "required": [
@@ -367,6 +350,236 @@
                 "maxLength": 4000
               }
             }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "projectId",
+              "role",
+              "actor",
+              "purpose",
+              "digest",
+              "note",
+              "at",
+              "actorName",
+              "confirmation"
+            ],
+            "properties": {
+              "projectId": {
+                "type": "string",
+                "minLength": 36,
+                "maxLength": 36
+              },
+              "role": {
+                "enum": [
+                  "po",
+                  "dev"
+                ]
+              },
+              "actor": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 80,
+                "pattern": "^[a-zA-Z0-9_.@-]+$"
+              },
+              "purpose": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 180
+              },
+              "digest": {
+                "type": "string",
+                "minLength": 64,
+                "maxLength": 64,
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "note": {
+                "type": "string",
+                "minLength": 8,
+                "maxLength": 4000
+              },
+              "at": {
+                "type": "string",
+                "minLength": 24,
+                "maxLength": 24,
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+              },
+              "actorName": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120,
+                "pattern": "^[^<>\\r\\n]+$"
+              },
+              "confirmation": {
+                "const": "name"
+              }
+            }
+          }
+        ]
+      },
+      "minItems": 0
+    },
+    "clarifications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "question",
+          "reference",
+          "blocking"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "pattern": "^[a-zA-Z0-9]+(?:[-_][a-zA-Z0-9]+)*$"
+          },
+          "question": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 4000
+          },
+          "reference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240,
+            "pattern": "^[A-Za-z0-9_./@ +()-]+$"
+          },
+          "blocking": {
+            "type": "boolean"
+          },
+          "answer": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "projectId",
+                  "role",
+                  "actor",
+                  "purpose",
+                  "digest",
+                  "note",
+                  "at",
+                  "signature"
+                ],
+                "properties": {
+                  "projectId": {
+                    "type": "string",
+                    "minLength": 36,
+                    "maxLength": 36
+                  },
+                  "role": {
+                    "enum": [
+                      "po",
+                      "dev"
+                    ]
+                  },
+                  "actor": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 80,
+                    "pattern": "^[a-zA-Z0-9_.@-]+$"
+                  },
+                  "purpose": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 180
+                  },
+                  "digest": {
+                    "type": "string",
+                    "minLength": 64,
+                    "maxLength": 64,
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 8,
+                    "maxLength": 4000
+                  },
+                  "at": {
+                    "type": "string",
+                    "minLength": 24,
+                    "maxLength": 24,
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+                  },
+                  "signature": {
+                    "type": "string",
+                    "minLength": 32,
+                    "maxLength": 4000
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "projectId",
+                  "role",
+                  "actor",
+                  "purpose",
+                  "digest",
+                  "note",
+                  "at",
+                  "actorName",
+                  "confirmation"
+                ],
+                "properties": {
+                  "projectId": {
+                    "type": "string",
+                    "minLength": 36,
+                    "maxLength": 36
+                  },
+                  "role": {
+                    "enum": [
+                      "po",
+                      "dev"
+                    ]
+                  },
+                  "actor": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 80,
+                    "pattern": "^[a-zA-Z0-9_.@-]+$"
+                  },
+                  "purpose": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 180
+                  },
+                  "digest": {
+                    "type": "string",
+                    "minLength": 64,
+                    "maxLength": 64,
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 8,
+                    "maxLength": 4000
+                  },
+                  "at": {
+                    "type": "string",
+                    "minLength": 24,
+                    "maxLength": 24,
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+                  },
+                  "actorName": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 120,
+                    "pattern": "^[^<>\\r\\n]+$"
+                  },
+                  "confirmation": {
+                    "const": "name"
+                  }
+                }
+              }
+            ]
           }
         }
       },

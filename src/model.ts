@@ -1,17 +1,18 @@
 import type { FileEntry } from "./files";
 
 export type Role = "po" | "dev";
-export interface Identity { id: string; publicKey: string }
+export interface Identity { id: string; name?: string; email?: string; publicKey?: string }
+export interface PersonSession { version: 1; projectId: string; role: Role; name: string }
 export interface TtsConfig { provider: "say" | "command"; voice: string; credentialEnv?: string }
 export interface Config {
-  version: 1;
+  version: 1 | 2;
   projectId: string;
   methodologyVersion: string;
   methodologyDigest: string;
   name: string;
   idea: string;
   createdAt: string;
-  roles: Record<Role, Identity>;
+  roles: { po: Identity; dev: Identity | null };
   harness: "codex" | "portable";
   language: string;
   tts?: TtsConfig;
@@ -47,7 +48,7 @@ export interface ReceiptBody {
   note: string;
   at: string;
 }
-export interface Receipt extends ReceiptBody { signature: string }
+export interface Receipt extends ReceiptBody { signature?: string; actorName?: string; confirmation?: "name" }
 export interface Approval { phase: string; gate: string; receipt: Receipt }
 export interface Clarification {
   id: string; question: string; reference: string; blocking: boolean; answer?: Receipt;
@@ -57,6 +58,7 @@ export interface Event {
     "acknowledge" | "clarify" | "answer" | "configure";
   at: string;
   actor: string;
+  actorName?: string;
   phase?: string;
   note?: string;
 }

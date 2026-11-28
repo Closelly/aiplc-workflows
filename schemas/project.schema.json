@@ -17,7 +17,10 @@
   ],
   "properties": {
     "version": {
-      "const": 1
+      "enum": [
+        1,
+        2
+      ]
     },
     "methodologyVersion": {
       "type": "string",
@@ -51,58 +54,7 @@
       "pattern": "^[a-f0-9]{64}$"
     },
     "roles": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "po",
-        "dev"
-      ],
-      "properties": {
-        "po": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "id",
-            "publicKey"
-          ],
-          "properties": {
-            "id": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 80,
-              "pattern": "^[a-zA-Z0-9_.@-]+$"
-            },
-            "publicKey": {
-              "type": "string",
-              "minLength": 30,
-              "maxLength": 140,
-              "pattern": "^ssh-ed25519 [A-Za-z0-9+/=]+$"
-            }
-          }
-        },
-        "dev": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "id",
-            "publicKey"
-          ],
-          "properties": {
-            "id": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 80,
-              "pattern": "^[a-zA-Z0-9_.@-]+$"
-            },
-            "publicKey": {
-              "type": "string",
-              "minLength": 30,
-              "maxLength": 140,
-              "pattern": "^ssh-ed25519 [A-Za-z0-9+/=]+$"
-            }
-          }
-        }
-      }
+      "type": "object"
     },
     "harness": {
       "enum": [
@@ -143,5 +95,128 @@
       "maxLength": 24,
       "pattern": "^[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*$"
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "version": {
+            "const": 1
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "roles": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "po",
+              "dev"
+            ],
+            "properties": {
+              "po": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "publicKey"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 80,
+                    "pattern": "^[a-zA-Z0-9_.@-]+$"
+                  },
+                  "publicKey": {
+                    "type": "string",
+                    "minLength": 30,
+                    "maxLength": 140,
+                    "pattern": "^ssh-ed25519 [A-Za-z0-9+/=]+$"
+                  }
+                }
+              },
+              "dev": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "publicKey"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 80,
+                    "pattern": "^[a-zA-Z0-9_.@-]+$"
+                  },
+                  "publicKey": {
+                    "type": "string",
+                    "minLength": 30,
+                    "maxLength": 140,
+                    "pattern": "^ssh-ed25519 [A-Za-z0-9+/=]+$"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "version": {
+            "const": 2
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "roles": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "po",
+              "dev"
+            ],
+            "properties": {
+              "po": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "name"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 80,
+                    "pattern": "^[a-zA-Z0-9_.@-]+$"
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 120,
+                    "pattern": "^[^<>\\r\\n]+$"
+                  },
+                  "email": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 254,
+                    "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"
+                  }
+                }
+              },
+              "dev": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
 }

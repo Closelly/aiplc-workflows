@@ -1,61 +1,72 @@
-# Motor, roles y recuperación
+# Motor, participantes y recuperación
 
-`workflows/po.yaml` y `workflows/dev.yaml` declaran orden, gates, colaboradores,
-artefactos y reglas de cada fase. `src/engine.ts` aplica transiciones deterministas.
-Los adaptadores de `src/harness.ts` traducen el estado a un encargo portable.
-Los agentes Markdown y las Agent Skills orientan investigación y producción.
-La CLI hace verificaciones de forma, trazabilidad y archivos. La evidencia real,
-la calidad editorial y las decisiones de negocio se revisan con personas.
+`workflows/po.yaml` y `workflows/dev.yaml` declaran el orden, las revisiones humanas,
+los colaboradores, artefactos y reglas. `src/engine.ts` aplica transiciones
+deterministas y `src/harness.ts` entrega encargos al asistente. La CLI verifica
+forma, trazabilidad y archivos; las personas revisan evidencia, calidad y decisiones.
 
-El estado serializa la posición, los eventos, las aprobaciones y los artefactos
-completos. El repositorio del producto conserva los workflows y sus schemas; la CLI
-comprueba su huella antes de usarlos. Una revisión PO vuelve a la primera fase
-afectada e invalida las transiciones y aprobaciones posteriores. La confianza en una
-aprobación depende de la clave de rol, la custodia del operador y el digest firmado.
+## Identificación por nombre e invitación
 
-## Archivo histórico y documentación viva
+Los productos nuevos usan `project.json` versión 2. El PO aporta su nombre al crear
+el producto y puede añadir un correo opcional. DEV empieza como `null`: no es
+necesario elegir a esa persona durante Discovery.
+
+La identificación de la copia local queda en `.git/closelly-aiplc-person.json`,
+fuera del contenido compartido. Los comandos de cada rol comprueban esa declaración.
+Al identificarse se configura únicamente el Git de ese producto con el nombre;
+si falta correo se usa una dirección interna `@aiplc.invalid`, sin buzón. No se
+modifica la configuración global de Git ni se solicita firma de commits o tags.
+
+En la fase final, `po invite --dev-name NOMBRE` genera `invitation.json` y
+`INVITACION-DEV.md`. El nombre del destinatario y el texto quedan incluidos en la
+versión de archivos que el PO revisa y en la entrega sellada. Un cambio después de
+aprobar obliga a reabrir la fase; la invitación histórica no se edita tras el sello.
+
+El DEV/OPS recibe una copia del repositorio y usa `dev onboard --name NOMBRE`.
+Primero se verifica la entrega; después se compara su nombre con el de la invitación,
+normalizando mayúsculas, tildes y espacios. El perfil aceptado se registra en
+`docs/technical/aiplc/participant.json`, ligado a esa invitación, y comienza onboarding.
+El nombre incorrecto no crea un perfil ni un estado DEV.
+
+Las revisiones guardan persona, rol, fecha, motivo y digest de los documentos. Las
+confirmaciones de este formato registran una declaración humana por nombre; no
+son firmas criptográficas ni certifican titularidad del nombre. El equipo administra
+el acceso al repositorio. Un propietario del disco puede modificar controles locales.
+El motor no administra cuentas, invitaciones por correo ni un servicio de autenticación.
+
+## Archivo histórico y documentación vigente
 
 - `docs/aiplc/state.json` y `artifact-manifest.json` registran el progreso PO.
-- `docs/aiplc/09-handoff/handoff-manifest.json` enumera archivos históricos, tamaños
-  y SHA-256. Se excluye a sí mismo para evitar una referencia circular.
-- El handoff incluye `AGENTS.md` y `docs/` en el commit y crea un tag anotado
-  `aiplc-baseline-v1`. El DEV verifica el árbol del tag, el manifest, los hashes,
-  el estado PO y la pertenencia del tag a la historia de su rama.
-- El DEV escribe `docs/technical/aiplc/state.json`. Las respuestas PO a aclaraciones
-  se guardan allí con firma sin reabrir el workflow histórico.
-- Business describe alcance, reglas, segmento y estrategia vigentes. Technical
-  distingue diseño y arquitectura instalada, fuente, datos, servicios, nombres de
-  variables y pruebas. Operations crece al confirmarse rutinas con persona, motivo,
-  frecuencia y resultado.
+- `docs/aiplc/09-handoff/handoff-manifest.json` enumera archivos, tamaños y SHA-256.
+  Se excluye a sí mismo para evitar una referencia circular.
+- La entrega crea un commit y el tag anotado `aiplc-baseline-v1`. DEV verifica árbol,
+  manifest, hashes, estado PO y pertenencia del tag a la historia de su rama.
+- El perfil y el estado DEV se crean en `docs/technical/aiplc/` al aceptar la invitación.
+  No se modifica el `project.json` histórico para registrar al nuevo participante.
+- Business describe decisiones de negocio actuales; Technical, diseño y arquitectura;
+  Operations, rutinas humanas con responsables y evidencia.
+- Reabrir una fase PO invalida sus aprobaciones posteriores y vuelve a verificar
+  los artefactos. Los cambios después del sello se registran en el conocimiento vigente.
 
-## Control local
+## Productos anteriores
 
-`po init` inscribe dos claves públicas SSH Ed25519 diferentes. Cada mutación valida
-la prueba de posesión de la clave de su rol. Cada gate guarda una firma sobre
-el proyecto, identidad, propósito, nota y digest. El comando interactivo muestra
-un reto para que el responsable confirme que revisó el resultado. El repositorio
-copia las claves públicas y jamás necesita copiar la privada.
-
-El control local evita mezclar identidades durante el uso ordinario. No impone
-permisos de archivos ni certifica identidad organizacional, presencia humana o
-tiempo de reproducción. El propietario del equipo o un actor con acceso a todas
-las claves y al repositorio puede cambiar los controles. El tag local tampoco
-identifica al emisor por sí solo. Compartirlo con un digest por un canal confiable
-o aplicar políticas de repositorio, revisión y firma externa queda a cargo del equipo.
-El motor no administra cuentas, repositorios remotos ni servicios de productos.
+Los productos versión 1 conservan su verificación por SSH y sus documentos y
+schemas originales. La nueva CLI puede leerlos y usar sus claves con `--key` o
+`AIPLC_PO_KEY`/`AIPLC_DEV_KEY`. Esta compatibilidad no se utiliza al crear productos
+nuevos por nombre. No se convierten firmas ni se reescriben tags existentes.
+Consulta [upgrading.md](upgrading.md).
 
 ## Bloqueos y reintentos
 
-- Si faltan archivos o un servicio, el comando termina con código 2 y el motivo.
-  Los borradores se pueden completar en el mismo repositorio. Los errores inesperados
-  devuelven código 1.
-- Si faltan aprobaciones después de preparar la película, lee `AWAITING_REVIEW`, revisa
-  y firma. El PO conserva el control y el DEV sigue bloqueado.
-- Si falta Git author, el índice tiene cambios staged o un archivo fue ignorado,
-  corrige el problema y ejecuta `po handoff` otra vez. En `SEAL_PENDING` la línea base
-  está en proceso de sellado. Los reintentos comprueban el manifest antes de completar.
-- Si un proceso terminó bruscamente, revisa el PID de `.git/closelly-aiplc.lock/owner.json`.
-  Cuando ya no exista la operación, retira solo ese directorio de bloqueo y reintenta.
-- Si la línea base difiere después de sellar, recupera la copia del tag y revisa antes
-  de continuar. No corrijas el problema reescribiendo el tag distribuido. Registra los
-  cambios posteriores de alcance y diseño en el conocimiento vigente.
+- Si falta un archivo, una revisión o un servicio, el comando termina con código 2
+  y su motivo. Los errores inesperados devuelven código 1.
+- Si falta indicar el destinatario en handoff, pide su nombre al PO y prepara la
+  invitación antes de la aprobación final.
+- Si un nombre no coincide, revísalo con la persona que hizo la invitación. No
+  cambies el destinatario histórico para forzar el acceso de otra persona.
+- Si hay cambios staged, resuélvelos antes de sellar. En SEAL_PENDING, comprueba el
+  manifest y reintenta `po handoff`; no reescribas un tag ya distribuido.
+- Si un proceso terminó bruscamente, revisa `.git/closelly-aiplc.lock/owner.json`.
+  Solo cuando la operación ya no exista, retira ese directorio y reintenta.
+- Si cambió la línea base después del sello, recupera su copia y registra los
+  cambios posteriores en la documentación vigente.

@@ -13,18 +13,22 @@ import { init, Repository } from "./repository";
 const help = `closelly-aiplc ${version}
 
 Uso: closelly-aiplc [--repo PATH] [--json] grupo comando [argumentos]
-Los comandos que cambian estado requieren --key o la variable AIPLC_PO_KEY/AIPLC_DEV_KEY.
+El PO se identifica al crear el producto. El DEV/OPS se incorpora por invitación al final.
 
 PO
-  po init PATH --po-key PO.pub --dev-key DEV.pub [--name NOMBRE --idea IDEA --po-id ID --dev-id ID]
+  po init PATH --po-name TU-NOMBRE [--name PRODUCTO --idea IDEA --po-email CORREO]
+  po identify --name TU-NOMBRE
   po start | resume | status | scaffold | validate | advance
   po approve --note NOTA
   po revise FASE --note MOTIVO
   po handoff [--prepare] [--force-render]
+  po invite --dev-name NOMBRE-DEL-DEV
   po answer Q-ID --note RESPUESTA
 
 DEV
-  dev onboard | resume | status | scaffold | validate | advance
+  dev onboard --name TU-NOMBRE [--email CORREO]
+  dev identify --name TU-NOMBRE
+  dev resume | status | scaffold | validate | advance
   dev ack PASO --note NOTA
   dev approve --note NOTA
   dev clarify --note PREGUNTA --reference RUTA [--blocking]
@@ -45,17 +49,20 @@ const bool = { type: "boolean" as const };
 const allOptions = {
   repo: string, json: bool, key: string, help: bool, version: bool,
   "po-key": string, "dev-key": string, "po-id": string, "dev-id": string, name: string,
+  "po-name": string, "po-email": string, "dev-name": string, email: string,
   idea: string, language: string, note: string, prepare: bool, "force-render": bool, reference: string,
   blocking: bool, harness: string, tts: string, voice: string, "credential-env": string,
   probe: bool, core: bool, as: string, from: string, "scope-change": bool,
 };
 const global = ["repo", "json", "key"];
 const rules: Record<string, { flags?: (keyof typeof allOptions)[]; count?: number }> = {
-  "po init": { flags: ["po-key", "dev-key", "po-id", "dev-id", "name", "idea", "language"], count: 1 },
+  "po init": { flags: ["po-key", "dev-key", "po-id", "dev-id", "name", "idea", "language", "po-name", "po-email"], count: 1 },
+  "po identify": { flags: ["name"] }, "dev identify": { flags: ["name"] },
+  "po invite": { flags: ["dev-name"] },
   "po start": {}, "po resume": {}, "po status": {}, "po scaffold": {}, "po validate": {}, "po advance": {},
   "po approve": { flags: ["note"] }, "po revise": { flags: ["note"], count: 1 },
   "po handoff": { flags: ["prepare", "force-render"] }, "po answer": { flags: ["note"], count: 1 },
-  "dev onboard": {}, "dev resume": {}, "dev status": {}, "dev scaffold": {}, "dev validate": {}, "dev advance": {},
+  "dev onboard": { flags: ["name", "email"] }, "dev resume": {}, "dev status": {}, "dev scaffold": {}, "dev validate": {}, "dev advance": {},
   "dev ack": { flags: ["note"], count: 1 }, "dev approve": { flags: ["note"] },
   "dev clarify": { flags: ["note", "reference", "blocking"] }, "dev architect": {}, "dev plan": {},
   "dev ready": { flags: ["note"] },
@@ -65,12 +72,12 @@ const rules: Record<string, { flags?: (keyof typeof allOptions)[]; count?: numbe
   "knowledge update": { flags: ["as", "from", "reference", "note", "scope-change"], count: 2 },
 };
 
-const confirm: Confirm = async (message, snapshot) => {
+const confirm: Confirm = async (message, _snapshot) => {
   requireThat(process.stdin.isTTY && process.stderr.isTTY,
     "La aprobación requiere a la persona responsable en una terminal interactiva.");
   const terminal = createInterface({ input: process.stdin, output: process.stderr });
   try {
-    const token = "CONFIRMAR " + snapshot.slice(0, 10);
+    const token = "CONFIRMAR";
     process.stderr.write(message + "\n");
     const answer = await terminal.question(`Escribe ${token}: `);
     requireThat(answer.trim() === token, "La confirmación no coincide.");
@@ -126,8 +133,8 @@ async function main() {
 
   if (command === "po init") {
     const path = init({
-      target: args[0], poPublicKey: needed(values["po-key"], "po-key"),
-      devPublicKey: needed(values["dev-key"], "dev-key"),
+      target: args[0], poPublicKey: values["po-key"], devPublicKey: values["dev-key"],
+      poName: values["po-name"], poEmail: values["po-email"],
       poId: values["po-id"], devId: values["dev-id"], name: values.name, idea: values.idea, language: values.language,
     });
     return print({ status: "INITIALIZED", path, next: "closelly-aiplc po start" });
@@ -159,6 +166,9 @@ async function main() {
   };
 
   switch (command) {
+    case "po identify": return print(await lifecycle.identify("po", needed(values.name, "name")));
+    case "dev identify": return print(await lifecycle.identify("dev", needed(values.name, "name")));
+    case "po invite": return print(await lifecycle.invite(needed(values["dev-name"], "dev-name")));
     case "po start": return print(await lifecycle.startPo());
     case "po status": return print(lifecycle.status("po"));
     case "dev status": return print(lifecycle.status("dev"));
@@ -184,7 +194,7 @@ async function main() {
       return;
     }
     case "po answer": return print(await lifecycle.answer(args[0], note(), confirm));
-    case "dev onboard": return print(await lifecycle.onboard());
+    case "dev onboard": return print(await lifecycle.onboard(values.name, values.email));
     case "dev ack": return print(await lifecycle.acknowledge(args[0], note(), confirm));
     case "dev clarify": return print(await lifecycle.clarify(note(), needed(values.reference, "reference"), !!values.blocking));
     case "dev architect": return print(currentOrder("dev", "architecture"));

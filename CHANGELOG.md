@@ -5,11 +5,25 @@ pueden existir cambios incompatibles, que se señalarán expresamente.
 
 ## Unreleased
 
+Sin cambios pendientes.
+
+## 0.2.0 — 2026-11-27
+
 ### Añadido
 
-- Gráficos de las etapas PO y DEV/OPS en el README, con sus aprobaciones y entregas.
-- Acceso desde el README para abrir Codex con la solicitud de instalación preparada,
-  con alternativa para copiarla al chat actual.
+- El PO comienza con su nombre; correo opcional y sin elegir aún al DEV/OPS.
+- Invitación al preparar la entrega: el PO indica el nombre del destinatario y
+  DEV/OPS se incorpora indicando ese mismo nombre, sin claves ni cuentas nuevas.
+- Las revisiones registran nombre, rol, fecha y documentos revisados.
+- Gráficos de las etapas y recorrido humano en el README.
+- Acceso desde el README para abrir Codex con una solicitud de instalación preparada
+  y alternativa para copiarla al chat actual.
+
+### Compatibilidad
+
+- Se conservan lectura, schemas y firmas de los productos de 0.1.x. No se migran
+  automáticamente las aprobaciones ni se modifican entregas selladas.
+- OpenSSH deja de ser requisito de la instalación y del recorrido básico nuevo.
 
 ## 0.1.1 — 2026-11-27
 

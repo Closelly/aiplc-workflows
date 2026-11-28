@@ -50,12 +50,9 @@ it("release installer installs without Bun/Node, supports spaces, and resumes a 
   expect(readlinkSync(join(base, "skills/closelly-aiplc-po"))).toBe(join(base, "installed/current/assets/skills/closelly-aiplc-po"));
   const loadEnv = Bun.spawnSync(["sh", "-c", '. "$1"; command -v closelly-aiplc', "test-env", join(base, "installed/env")]);
   success(loadEnv); expect(loadEnv.stdout.toString().trim()).toBe(cli);
-  for (const role of ["po", "dev"]) {
-    success(Bun.spawnSync(["ssh-keygen", "-q", "-t", "ed25519", "-N", "", "-f", join(base, role)]));
-  }
   const product = join(base, "product");
-  success(command("po", "init", product, "--po-key", join(base, "po.pub"), "--dev-key", join(base, "dev.pub"), "--name", "Installation smoke test"));
-  success(command("--repo", product, "--key", join(base, "po"), "po", "start"));
+  success(command("po", "init", product, "--po-name", "Luis", "--name", "Installation smoke test"));
+  success(command("--repo", product, "po", "start"));
   const resumed = command("--repo", product, "--json", "po", "resume"); success(resumed);
   const status = JSON.parse(resumed.stdout.toString());
   expect(status.status).toBe("ACTIVE"); expect(status.phase).toBe("discovery");

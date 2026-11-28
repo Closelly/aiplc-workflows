@@ -59,3 +59,20 @@ fallos de permisos o servicio de GitHub. La publicación final permanece manual.
 El workflow comprueba las cuatro plataformas y solo entonces crea el tag y el
 borrador con los archivos. Las releases públicas y los tags de otro commit no se
 sobrescriben. Consulta docs/releasing.md para el recorrido y los reintentos.
+
+## Recorrido por nombres e invitación 0.2.0
+
+La suite incorpora casos de creación del PO sin claves ni DEV asignado, invitación
+solo en la entrega, apertura de una copia Git por el destinatario, rechazo de otro
+nombre, normalización de tildes y espacios y conservación del sello histórico.
+Las confirmaciones por nombre siguen invalidándose cuando cambian los documentos.
+Las pruebas de compatibilidad conservan el recorrido anterior por SSH.
+
+La suite local pasó 26 pruebas; se omitió el render multimedia. Los casos de
+transferencia de identidad usan un paquete sintético explícito para verificar la
+invitación y Git, no para afirmar que se haya renderizado una película real.
+El instalador nativo también crea y reanuda un producto nuevo usando solo el
+nombre del PO, sin Bun/Node en PATH ni generación de claves.
+
+Se renderizaron los dos gráficos Mermaid y se comprobó el acceso web de Codex en
+escritorio y móvil, la solicitud codificada y la alternativa de copia.

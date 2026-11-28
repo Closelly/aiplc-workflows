@@ -57,8 +57,8 @@ if [ "$os" = linux ]; then
     [ ! -e "$loader" ] || fail 'Esta release requiere Linux con glibc; musl/Alpine no está soportado.'
   done
 fi
-for program in git ssh ssh-keygen tar awk diff; do
-  command -v "$program" >/dev/null 2>&1 || fail "Falta $program. Instala Git y OpenSSH con el gestor de tu sistema y vuelve a intentarlo."
+for program in git tar awk diff; do
+  command -v "$program" >/dev/null 2>&1 || fail "Falta $program. Instala esta herramienta con el gestor de tu sistema y vuelve a intentarlo."
 done
 sha256() {
   if command -v sha256sum >/dev/null 2>&1; then sha256sum "$1" | awk '{print $1}'

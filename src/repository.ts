@@ -2,10 +2,11 @@ import { randomUUID } from "node:crypto";
 import { cpSync, mkdirSync, realpathSync, rmSync } from "node:fs";
 import { basename, dirname, resolve } from "node:path";
 import { newState, assertState } from "./engine";
-import { enroll } from "./identity";
+import { enroll, namedIdentity } from "./identity";
+import { identify, localPerson, participant } from "./participants";
 import { atomic, Blocked, digest, entry, files, git, inside, inventory, readText, requireThat, writeJson } from "./files";
 import { distributionDir, Methodology, version } from "./methodology";
-import type { Config, Manifest, Role, State } from "./model";
+import type { Config, Identity, Manifest, PersonSession, Role, State } from "./model";
 
 export const baseline = "docs/aiplc";
 export const historical = "docs/aiplc/methodology";
@@ -38,8 +39,10 @@ function title(name: string): string {
 
 export interface InitOptions {
   target: string;
-  poPublicKey: string;
-  devPublicKey: string;
+  poPublicKey?: string;
+  devPublicKey?: string;
+  poName?: string;
+  poEmail?: string;
   poId?: string;
   devId?: string;
   name?: string;
@@ -55,12 +58,15 @@ export function init(options: InitOptions): string {
   requireThat(!git(parent, ["rev-parse", "--show-toplevel"], true),
     "Crea el producto fuera de cualquier otro repositorio Git.");
   const method = new Methodology(distributionDir());
-  const po = enroll(options.poId ?? "product-owner", options.poPublicKey);
-  const dev = enroll(options.devId ?? "developer", options.devPublicKey);
-  requireThat(po.id.toLowerCase() !== dev.id.toLowerCase() && po.publicKey !== dev.publicKey,
-    "El PO y el DEV requieren identidades y claves públicas distintas.");
+  const legacy = !!(options.poPublicKey || options.devPublicKey);
+  requireThat(!legacy || (!!options.poPublicKey && !!options.devPublicKey && !options.poName), "No mezcles el nombre con las opciones de claves del formato anterior.");
+  const po = legacy ? enroll(options.poId ?? "product-owner", options.poPublicKey!) :
+    namedIdentity(options.poName ?? "", options.poId ?? "product-owner", options.poEmail);
+  const dev = legacy ? enroll(options.devId ?? "developer", options.devPublicKey!) : null;
+  if (dev) requireThat(po.id.toLowerCase() !== dev.id.toLowerCase() && po.publicKey !== dev.publicKey,
+    "El PO y el DEV requieren identidades distintas.");
   const config: Config = {
-    version: 1, methodologyVersion: version, methodologyDigest: method.digest, projectId: randomUUID(),
+    version: legacy ? 1 : 2, methodologyVersion: version, methodologyDigest: method.digest, projectId: randomUUID(),
     name: options.name ?? basename(root), idea: options.idea ?? "", createdAt: new Date().toISOString(),
     roles: { po, dev }, harness: "codex", language: options.language ?? "es-CL",
   };
@@ -90,6 +96,7 @@ export function init(options: InitOptions): string {
     writeJson(inside(root, projectFile), config);
     writeJson(inside(root, stateFiles.po), newState(config.projectId, "po"));
     writeJson(inside(root, artifactManifest), { version: 1, projectId: config.projectId, phases: [] });
+    if (!legacy) identify(new Repository(root), "po", po.name!);
     return realpathSync(root);
   } catch (error) {
     rmSync(root, { recursive: true, force: true });
@@ -111,13 +118,17 @@ export class Repository {
     this.config = this.method.schemas.read<Config>("project", this.root, projectFile);
     requireThat(this.method.digest === this.config.methodologyDigest,
       "Las definiciones de la metodología no coinciden con la versión fijada al iniciar.");
-    requireThat(this.config.roles.po.publicKey !== this.config.roles.dev.publicKey &&
-      this.config.roles.po.id.toLowerCase() !== this.config.roles.dev.id.toLowerCase(),
-    "El repositorio requiere identidades PO y DEV distintas.");
+    if (this.config.version === 1) {
+      requireThat(this.config.roles.dev && this.config.roles.po.publicKey !== this.config.roles.dev.publicKey &&
+        this.config.roles.po.id.toLowerCase() !== this.config.roles.dev.id.toLowerCase(),
+      "El repositorio requiere identidades PO y DEV distintas.");
+    }
   }
 
   path(path: string): string { return inside(this.root, path); }
   has(path: string): boolean { return !!entry(this.path(path)); }
+  identity(role: Role): Identity | null { return participant(this, role); }
+  person(): PersonSession | null { return this.config.version === 2 ? localPerson(this) : null; }
   json<T>(schema: string, path: string): T { return this.method.schemas.read<T>(schema, this.root, path); }
   git(args: string[], allowFailure = false): string { return git(this.root, args, allowFailure); }
 

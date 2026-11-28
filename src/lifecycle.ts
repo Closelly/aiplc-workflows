@@ -3,6 +3,7 @@ import { activePhase, appendEvent, approve, complete, newState, revise, start } 
 import { preparePackage } from "./briefing";
 import { atomic, digest, entry, files, inventory, requireThat, writeJson } from "./files";
 import { questionDigest, RoleAccess } from "./identity";
+import { identify, invitation, invitationFile, invitationText, joinInvitation, prepareInvitation } from "./participants";
 import type { Config, Event, Manifest, Role, State } from "./model";
 import { draft, checklistDigest, inspectPlan, validatePhase, verifyCompleted } from "./quality";
 import { artifactManifest, handoff, living, projectFile, Repository, tag, taggedManifest } from "./repository";
@@ -12,7 +13,7 @@ export type Confirm = (message: string, challenge: string) => Promise<void>;
 export type Progress = (message: string) => void;
 
 function event(type: Event["type"], access: RoleAccess, phase?: string, note?: string): Event {
-  return { type, actor: access.actor, phase, note, at: new Date().toISOString() };
+  return { type, actor: access.actor, ...(access.named ? { actorName: access.actorName } : {}), phase, note, at: new Date().toISOString() };
 }
 
 function verifyDev(repo: Repository, state: State): Manifest {
@@ -34,7 +35,7 @@ export class Lifecycle {
   constructor(readonly repo: Repository, readonly key?: string) {}
 
   access(role: Role, command: string): RoleAccess {
-    const access = new RoleAccess(this.repo.config, role, this.key);
+    const access = new RoleAccess(this.repo.config, role, this.key, this.repo.identity(role), this.repo.person());
     access.authenticate(command);
     return access;
   }
@@ -43,6 +44,25 @@ export class Lifecycle {
     const state = this.repo.state(role);
     if (role === "dev") verifyDev(this.repo, state);
     return { state, phase: activePhase(state, this.repo.method.workflows[role]) };
+  }
+
+  async identify(role: Role, name: string) {
+    return this.repo.locked(() => ({ role, person: identify(this.repo, role, name).name, status: "IDENTIFIED" }));
+  }
+
+  async invite(devName: string) {
+    return this.repo.locked(() => {
+      requireThat(this.repo.config.version === 2, "El producto anterior conserva sus responsables inscritos.");
+      const access = this.access("po", "invite");
+      const { state, phase } = this.current("po");
+      requireThat(phase.id === "handoff", "El nombre del DEV/OPS se pide al preparar la entrega final.");
+      requireThat(!state.approvals.some(item => item.phase === phase.id), "La entrega ya fue aprobada. Reabre handoff antes de cambiar su destinatario.");
+      verifyCompleted(this.repo, state);
+      const value = prepareInvitation(this.repo, devName);
+      save(this.repo, appendEvent(state, event("configure", access, phase.id, `Invitación preparada para ${value.devName}.`)));
+      return { project: value.projectName, recipient: value.devName, invitation: invitationText,
+        next: "Comparte la invitación junto con el repositorio cuando cierres la entrega." };
+    });
   }
 
   async startPo() {
@@ -57,7 +77,8 @@ export class Lifecycle {
   status(role: Role) {
     if (role === "dev" && !this.repo.has("docs/technical/aiplc/state.json")) {
       this.repo.verifyHandoff();
-      return { role, status: "AWAITING_DEV", next: "closelly-aiplc dev onboard" };
+      return { role, status: "AWAITING_DEV", next: this.repo.config.version === 2 ?
+        "Indica tu nombre con closelly-aiplc dev onboard --name TU-NOMBRE para abrir la invitación." : "closelly-aiplc dev onboard" };
     }
     const state = this.repo.state(role);
     if (role === "dev") verifyDev(this.repo, state);
@@ -71,7 +92,8 @@ export class Lifecycle {
     const item = phase?.checklist?.[state.checklist.length];
     const next = status === "INITIALIZED" ? "closelly-aiplc po start" :
       status === "SEAL_PENDING" ? "closelly-aiplc po handoff" :
-      status === "AWAITING_DEV" ? "Entrega el repositorio y su tag al DEV. El DEV ejecuta closelly-aiplc dev onboard." :
+      status === "AWAITING_DEV" ? (this.repo.config.version === 2 ? "Comparte la invitación y el repositorio con el DEV/OPS indicado." :
+        "Entrega el repositorio y su tag al DEV. El DEV ejecuta closelly-aiplc dev onboard.") :
       status === "READY" ? "Continúa con tu proceso de desarrollo habitual." :
       item ? `closelly-aiplc dev ack ${item.id} --note "..."` :
       phase?.final === "seal" ? "closelly-aiplc po handoff" :
@@ -82,22 +104,31 @@ export class Lifecycle {
       project: this.repo.config.name, role, status, next, integrity, phase: phase?.id, title: phase?.title,
       gate: phase?.gate, checklistCurrent: item, checklistDone: state.checklist.length,
       completed: state.completed.map(item => item.phase),
-      approvals: state.approvals.map(item => ({ gate: item.gate, actor: item.receipt.actor, at: item.receipt.at })),
+      approvals: state.approvals.map(item => ({ gate: item.gate, actor: item.receipt.actorName ?? item.receipt.actor, at: item.receipt.at })),
       pendingClarifications: state.clarifications.filter(q => !q.answer),
-      missing: phase?.artifacts.filter(artifact => !this.repo.has(phase.folder + "/" + artifact.path))
-        .map(artifact => phase.folder + "/" + artifact.path) ?? [],
+      missing: [...(phase?.artifacts.filter(artifact => !this.repo.has(phase.folder + "/" + artifact.path))
+        .map(artifact => phase.folder + "/" + artifact.path) ?? []),
+        ...(this.repo.config.version === 2 && phase?.id === "handoff" ? [invitationFile, invitationText].filter(path => !this.repo.has(path)) : [])],
       lastEvent: state.events.at(-1),
     };
   }
 
-  async onboard() {
+  async onboard(name?: string, email?: string) {
     return this.repo.locked(() => {
-      const access = this.access("dev", "onboard");
+      let access: RoleAccess | undefined;
+      if (this.repo.config.version === 1) access = this.access("dev", "onboard");
       const sealed = this.repo.verifyHandoff();
       verifyCompleted(this.repo, this.repo.state("po"));
+      if (this.repo.config.version === 2) {
+        const current = this.repo.person();
+        const declared = name ?? (current?.role === "dev" ? current.name : "");
+        requireThat(declared, "¿Cómo te llamas? Indícalo con dev onboard --name NOMBRE para comprobar la invitación.");
+        joinInvitation(this.repo, declared, email);
+        access = this.access("dev", "onboard");
+      }
       if (!this.repo.has("docs/technical/aiplc/state.json")) {
         const state = start({ ...newState(this.repo.config.projectId, "dev"), baselineDigest: sealed.digest },
-          event("start", access, "developer-onboarding"));
+          event("start", access!, "developer-onboarding"));
         save(this.repo, state);
       }
       return this.status("dev");
@@ -128,7 +159,7 @@ export class Lifecycle {
         "Usa dev ready para confirmar y cerrar la preparación técnica.");
       const access = this.access(role, final ? "ready" : "approve");
       const hash = await validatePhase(this.repo, role, state, false);
-      await confirm(`${access.actor}, revisa ${phase.title} y confirma el gate ${phase.gate}.\n${phase.artifacts.map(item =>
+      await confirm(`${access.actorName}, revisa ${phase.title} y confirma el gate ${phase.gate}.\n${phase.artifacts.map(item =>
         "  " + phase.folder + "/" + item.path).join("\n")}`, hash);
       requireThat(await validatePhase(this.repo, role, state, false) === hash,
         "Los artefactos cambiaron mientras se revisaban. Repite la aprobación.");
@@ -193,6 +224,7 @@ export class Lifecycle {
       if (state.status === "AWAITING_DEV") return this.finishSeal(state);
       const phase = activePhase(state, this.repo.method.workflows.po);
       requireThat(phase.final === "seal", "Completa las ocho primeras fases antes de preparar el handoff.");
+      if (this.repo.config.version === 2) invitation(this.repo);
       verifyCompleted(this.repo, state);
       const plan = inspectPlan(this.repo, phase);
       await preparePackage(this.repo);
@@ -205,7 +237,7 @@ export class Lifecycle {
       const detail = {
         phase: phase.id, status: "AWAITING_REVIEW",
         productPackage: onboardingPath(), commercialPackage: handoff + "/commercial-handoff.md",
-        next: "Revisa el paquete y completa validation-report.md. Firma con closelly-aiplc po approve --note \"...\" y repite po handoff.",
+        next: "Revisa el paquete y completa validation-report.md. Confirma con closelly-aiplc po approve --note \"...\" y repite po handoff.",
       };
       if (prepare) return detail;
       const approved = state.approvals.some(approval => approval.phase === phase.id);
@@ -256,7 +288,9 @@ export class Lifecycle {
     const verified = this.repo.verifyHandoff();
     return {
       status: "AWAITING_DEV", role: "po", tag, digest: verified.digest,
-      next: "Entrega el repositorio y este tag al DEV. El DEV ejecuta closelly-aiplc dev onboard.",
+      next: this.repo.config.version === 2 ? "Comparte la invitación y el repositorio con el DEV/OPS. Se identificará con su nombre al abrirlos." :
+        "Entrega el repositorio y este tag al DEV. El DEV ejecuta closelly-aiplc dev onboard.",
+      ...(this.repo.config.version === 2 ? { invitation: invitationText, recipient: invitation(this.repo).devName } : {}),
       commercialPackage: handoff + "/commercial-handoff.md", productPackage: onboardingPath(),
     };
   }

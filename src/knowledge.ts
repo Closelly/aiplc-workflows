@@ -43,7 +43,7 @@ export function audit(repo: Repository) {
       const role: Role = area === "business" ? "po" : proof.role;
       try {
         verifyReceipt(repo.config, proof, role, "knowledge:" + area,
-          digest({ path: item.path, source: item.source, content: item.content, scopeChange: item.scopeChange }));
+          digest({ path: item.path, source: item.source, content: item.content, scopeChange: item.scopeChange }), repo.identity(role));
         recent.set(item.path, item);
       } catch (error) { issues.push((error as Error).message); }
     }

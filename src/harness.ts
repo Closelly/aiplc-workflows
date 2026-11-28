@@ -1,6 +1,7 @@
 import { readText } from "./files";
 import type { Phase, Role } from "./model";
 import { historical, Repository } from "./repository";
+import { invitationFile, invitationText } from "./participants";
 
 export interface WorkOrder {
   project: string;
@@ -34,7 +35,7 @@ const adapters: Record<string, HarnessAdapter> = {
     id: "codex",
     instructions: order => common(order) + `
 Usa $closelly-aiplc-${order.role} si está instalado. Navega y captura con las herramientas que este chat tenga habilitadas.
-Entrega las rutas para revisión. El operador ejecuta el comando del gate con su clave de rol.`,
+Entrega las rutas para revisión. La persona responsable confirma cada aprobación en su terminal.`,
   },
   portable: {
     id: "portable",
@@ -65,5 +66,16 @@ export function workOrder(repo: Repository, role: Role, phase: Phase, checklistI
     step: phase.checklist?.[checklistIndex],
   };
   const adapter = adapters[repo.config.harness];
-  return { adapter: adapter.id, prompt: adapter.instructions(order), order };
+  let people = "";
+  if (repo.config.version === 2) {
+    people = role === "po" ? `\nEl PO es ${repo.config.roles.po.name}. Para empezar solo necesita su nombre; no pidas datos del DEV/OPS ni claves SSH durante Discovery.` :
+      "\nEl DEV/OPS se identifica con su nombre. Comprueba que coincide con la invitación del PO; no pidas claves SSH.";
+    if (role === "dev") order.inputs.push(invitationFile, invitationText);
+    if (role === "po" && phase.id === "handoff") {
+      people += "\nAntes de la aprobación final, pregunta al PO quién recibirá el producto. Genera la invitación con po invite --dev-name NOMBRE. La invitación se comparte con el repositorio tras cerrar la entrega.";
+      order.outputs.push({ path: invitationFile, type: "json", schema: historical + "/schemas/invitation.schema.json", generated: true },
+        { path: invitationText, type: "md", generated: true });
+    }
+  }
+  return { adapter: adapter.id, prompt: adapter.instructions(order) + people, order };
 }

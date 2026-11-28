@@ -6,7 +6,8 @@ principal de la documentación es español; se aceptan issues en español o ingl
 
 ## Entorno local
 
-Usa Bun 1.4.5 (la versión de CI), Git y OpenSSH con firmas Ed25519. Después de clonar:
+Usa Bun 1.4.5 (la versión de CI) y Git. OpenSSH solo se necesita para las pruebas
+de compatibilidad con productos anteriores. Después de clonar:
 
 ```sh
 bun install --frozen-lockfile
