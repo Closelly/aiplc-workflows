@@ -2,6 +2,12 @@
 const request = document.querySelector('#request');
 const opener = document.querySelector('#open-codex');
 const status = document.querySelector('#status');
+function fitMessage() {
+  request.style.height = 'auto';
+  request.style.height = request.scrollHeight + 2 + 'px';
+}
+fitMessage();
+window.addEventListener('resize', fitMessage);
 const codexUrl = new URL('codex://new');
 codexUrl.searchParams.set('prompt', request.value.trim());
 opener.href = codexUrl.toString();

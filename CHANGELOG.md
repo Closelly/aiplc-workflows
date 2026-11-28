@@ -5,7 +5,9 @@ pueden existir cambios incompatibles, que se señalarán expresamente.
 
 ## Unreleased
 
-- Mensaje de instalación breve y apertura de Codex solo mediante el botón de la
+- Mensaje de instalación con el comando oficial, lectura de las guías y ayuda para
+  empezar en el mismo chat. El texto se muestra completo también en móvil.
+- Apertura de Codex solo mediante el botón de la
   página, sin apertura automática al visitarla.
 - Diagramas del README como imágenes SVG con distribución fija para evitar textos
   superpuestos o saltos de línea distintos en GitHub.
