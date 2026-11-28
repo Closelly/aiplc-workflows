@@ -36,7 +36,9 @@ export function decideRelease(state: ReleaseState): { shouldRelease: boolean; re
     throw new Error(`La nueva versión ${state.version} debe ser mayor que la publicada ${state.latest}.`);
   }
   if (state.tagCommit && state.tagCommit !== state.commit) {
-    throw new Error("El tag de esta versión ya apunta a otro commit. No se moverá: aumenta la versión.");
+    // A read-only workflow token may not see a draft. Its immutable tag still
+    // identifies the version as already prepared, even when the release is hidden.
+    return { shouldRelease: false, reason: "Esta versión ya tiene un tag de otro commit. Se conserva; aumenta la versión para preparar otros cambios." };
   }
   return { shouldRelease: true, reason: state.existing?.draft ? "Reintentar el borrador del mismo commit." : "Preparar una versión nueva en borrador." };
 }
@@ -94,7 +96,7 @@ export class GitHub {
     const published = await this.request<Release>(`releases/tags/${encodeURIComponent(tag)}`);
     if (published) return published;
     // GitHub documents the tag endpoint for published releases. Look up drafts
-    // explicitly so retrying an incomplete draft does not look like a new release.
+    // when visible to this token. A reserved tag also protects hidden drafts.
     for (let page = 1; ; page++) {
       const batch = await this.request<Release[]>(`releases?per_page=100&page=${page}`);
       if (!Array.isArray(batch)) throw new Error("No se pudo consultar la lista de releases.");

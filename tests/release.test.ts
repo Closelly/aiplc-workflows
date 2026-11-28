@@ -13,7 +13,7 @@ test("a new main version prepares a draft; an already published version is skipp
 test("a failed draft can be retried at its commit; later merges preserve its original contents", () => {
   expect(decideRelease({ ...state, existing: { draft: true }, tagCommit: commit }).shouldRelease).toBe(true);
   expect(decideRelease({ ...state, existing: { draft: true }, tagCommit: "b".repeat(40) }).shouldRelease).toBe(false);
-  expect(() => decideRelease({ ...state, tagCommit: "b".repeat(40) })).toThrow("otro commit");
+  expect(decideRelease({ ...state, tagCommit: "b".repeat(40) }).shouldRelease).toBe(false);
 });
 
 test("versions are numeric and must increase, without shell or tag syntax", () => {
@@ -67,4 +67,13 @@ test("draft lookup uses authenticated release listings when the published-tag en
     Response.json([{ tag_name: "v0.1.1", draft: true }, { tag_name: "v0.1.0", draft: false }]));
   expect(await api.releaseByTag("v0.1.1")).toEqual({ tag_name: "v0.1.1", draft: true });
   expect(await api.releaseByTag("v0.1.2")).toBeNull();
+});
+
+test("an existing draft hidden from a read-only token is still preserved by its tag", async () => {
+  const api = client(url => url.includes("releases/tags/") ? new Response(null, { status: 404 }) :
+    Response.json([{ tag_name: "v0.1.0", draft: false }]));
+  const existing = await api.releaseByTag("v0.1.1");
+  expect(existing).toBeNull();
+  expect(decideRelease({ ...state, existing, tagCommit: "b".repeat(40) }).shouldRelease).toBe(false);
+  expect(decideRelease({ ...state, existing, tagCommit: commit }).shouldRelease).toBe(true);
 });

@@ -19,6 +19,9 @@ Los cambios en `main` que mantienen una versión ya publicada no preparan otra
 release. Si esa versión ya tiene un borrador de otro commit, también se conserva:
 para incluir más cambios en una release nueva, aumenta el número de versión.
 Un borrador ya publicado nunca se sobrescribe y un tag existente nunca se mueve.
+El tag también permite reconocer una versión preparada cuando GitHub oculta su
+borrador al proceso de solo lectura: un cambio posterior con la misma versión
+omite la preparación y conserva ese tag.
 
 ## Qué prepara GitHub
 
